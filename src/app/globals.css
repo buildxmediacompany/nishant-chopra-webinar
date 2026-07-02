@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Design tokens — grounded in the subject (live vocal performance,
+   Bollywood ornamentation) rather than a generic dark theme.
+
+   Color:
+     --color-stage         deep theatre-maroon base (warmer than near-black)
+     --color-stage-raised  card/panel surface, one step up from the stage
+     --color-marigold      primary gold accent — trust, quality, "the craft"
+     --color-marigold-soft lighter gold for headline highlights
+     --color-sindoor       vermilion-red accent — urgency, action, CTAs
+     --color-sindoor-deep  pressed/hover state for CTAs
+     --color-cream         warm off-white for primary text on dark
+     --color-ink            near-black for text on light/gold chips
+
+   Type:
+     --font-display  Fraunces — warm, characterful serif for headlines
+     --font-body     Inter — clean workhorse for paragraphs, cards, forms
+     --font-utility  Barlow Condensed — tracked caps for eyebrows, chips,
+                     countdown digits (ticket-stub / concert-poster feel)
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --color-stage: #1b0f12;
+  --color-stage-raised: #2a171b;
+  --color-stage-raised-2: #341c21;
+  --color-stage-line: rgba(232, 169, 59, 0.16);
+
+  --color-marigold: #e8a93b;
+  --color-marigold-soft: #f4c766;
+  --color-marigold-dim: rgba(232, 169, 59, 0.14);
+
+  --color-sindoor: #c23b33;
+  --color-sindoor-deep: #9e2e28;
+  --color-sindoor-dim: rgba(194, 59, 51, 0.16);
+
+  --color-cream: #f3e9dd;
+  --color-cream-dim: rgba(243, 233, 221, 0.68);
+  --color-cream-faint: rgba(243, 233, 221, 0.4);
+  --color-ink: #241417;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --font-utility: "Barlow Condensed", "Arial Narrow", sans-serif;
+}
+
+@theme inline {
+  --color-stage: var(--color-stage);
+  --color-stage-raised: var(--color-stage-raised);
+  --color-stage-raised-2: var(--color-stage-raised-2);
+  --color-stage-line: var(--color-stage-line);
+  --color-marigold: var(--color-marigold);
+  --color-marigold-soft: var(--color-marigold-soft);
+  --color-marigold-dim: var(--color-marigold-dim);
+  --color-sindoor: var(--color-sindoor);
+  --color-sindoor-deep: var(--color-sindoor-deep);
+  --color-sindoor-dim: var(--color-sindoor-dim);
+  --color-cream: var(--color-cream);
+  --color-cream-dim: var(--color-cream-dim);
+  --color-cream-faint: var(--color-cream-faint);
+  --color-ink: var(--color-ink);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-utility: var(--font-utility);
+}
+
+* {
+  border-color: var(--color-stage-line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-stage);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Signature motif: a hand-drawn "harkat" (vocal-ornament) squiggle that
+   draws itself in on scroll — echoes the page's own subject matter
+   instead of a generic underline/divider. Used sparingly: under the hero
+   headline and as section dividers. */
+.harkat-line {
+  stroke-dasharray: 340;
+  stroke-dashoffset: 340;
+  animation: harkat-draw 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards;
+}
+
+@keyframes harkat-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .harkat-line {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+/* Visible keyboard focus (quality floor) */
+:focus-visible {
+  outline: 2px solid var(--color-marigold);
+  outline-offset: 2px;
+}
