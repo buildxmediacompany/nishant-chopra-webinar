@@ -24,6 +24,25 @@ function pgCode(err: unknown): string | null {
   return typeof code === "string" ? code : null;
 }
 
+/**
+ * True when the driver never reached Postgres — a suspended Neon project, a bad
+ * DATABASE_URL, or no network. These arrive with no SQLSTATE to interpret.
+ */
+function isConnectionError(err: unknown): boolean {
+  for (let cur: unknown = err, depth = 0; cur && depth < 5; depth++) {
+    if (typeof cur !== "object") break;
+    const message = (cur as { message?: unknown }).message;
+    if (
+      typeof message === "string" &&
+      (message.includes("fetch failed") || message.includes("Error connecting to database"))
+    ) {
+      return true;
+    }
+    cur = (cur as { cause?: unknown }).cause ?? (cur as { sourceError?: unknown }).sourceError;
+  }
+  return false;
+}
+
 /** Names the offending column when Postgres tells us which constraint tripped. */
 function constraintField(err: unknown): string | null {
   if (typeof err !== "object" || err === null) return null;
@@ -64,8 +83,17 @@ export function toActionError(err: unknown, context: string): ActionResult {
 
   console.error(`[admin] ${context} failed:`, err);
 
-  const detail = err instanceof Error ? err.message : String(err);
-  return { ok: false, error: `${context} failed: ${detail}` };
+  if (isConnectionError(err)) {
+    return {
+      ok: false,
+      error: "Can't reach the database. Nothing was saved — check the connection and retry.",
+    };
+  }
+
+  // Never echo the driver's message: Drizzle embeds the full SQL statement and
+  // every bound parameter in it, and this string is sent to the browser.
+  const name = err instanceof Error ? err.name : "Error";
+  return { ok: false, error: `${context} failed (${name}). The server log has the details.` };
 }
 
 /** For mutations with nothing to validate — deletes, active toggles. */

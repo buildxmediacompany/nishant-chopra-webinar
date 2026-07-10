@@ -22,7 +22,8 @@ function Attribution({ t }: { t: Testimonial }) {
     <div className="flex items-center gap-3">
       {t.avatarUrl && (
         <div className="relative size-10 shrink-0 overflow-hidden rounded-full">
-          <Image src={t.avatarUrl} alt={t.name} fill className="object-cover" />
+          {/* Admin-typed URL: an unlisted host must degrade, not 500 the page. */}
+          <Image src={t.avatarUrl} alt={t.name} fill unoptimized className="object-cover" />
         </div>
       )}
       <div>

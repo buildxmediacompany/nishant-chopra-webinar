@@ -145,6 +145,8 @@ export function Hero({
                     alt="Masterclass preview"
                     fill
                     priority
+                    // Admin-typed URL: an unlisted host must degrade, not 500 the page.
+                    unoptimized
                     className="object-cover"
                     sizes="(min-width: 1024px) 400px, 90vw"
                   />

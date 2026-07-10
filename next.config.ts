@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
       // YouTube poster frames for hero / testimonial / showcase embeds.
       { protocol: "https", hostname: "i.ytimg.com" },
       { protocol: "https", hostname: "img.youtube.com" },
+      // Client's existing media library.
+      { protocol: "https", hostname: "images.leadconnectorhq.com" },
+      { protocol: "https", hostname: "assets.cdn.filesafe.space" },
     ],
   },
 };

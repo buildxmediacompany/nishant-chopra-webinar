@@ -4,37 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import { Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { parseVideoUrl } from "@/lib/video-url";
 
 /**
- * Extracts a YouTube video id from the URL shapes an admin is likely to paste:
- * watch?v=, youtu.be/, /embed/, /shorts/, /live/. Returns null for anything else.
- */
-export function youtubeId(url: string): string | null {
-  try {
-    const u = new URL(url.trim());
-    const host = u.hostname.replace(/^www\./, "");
-    if (host === "youtu.be") return u.pathname.slice(1).split("/")[0] || null;
-    if (!host.endsWith("youtube.com") && !host.endsWith("youtube-nocookie.com")) {
-      return null;
-    }
-    const v = u.searchParams.get("v");
-    if (v) return v;
-    const m = u.pathname.match(/^\/(embed|shorts|live|v)\/([^/?#]+)/);
-    return m ? m[2] : null;
-  } catch {
-    return null;
-  }
-}
-
-/** youtube-nocookie thumbnail (works for unlisted videos too). */
-function thumbFor(id: string) {
-  return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-}
-
-/**
- * Thumbnail-first YouTube embed. Nothing from YouTube loads until the user
- * clicks play (fast LCP, no third-party cookies on load). Works with Unlisted
- * videos, which is how the client publishes testimonials and showcase clips.
+ * Thumbnail-first video embed for YouTube and Vimeo. Nothing from the provider
+ * loads until the user clicks play (fast LCP, no third-party cookies on load).
+ * Works with Unlisted/private-link videos, which is how the client publishes
+ * testimonials and showcase clips.
  */
 export function VideoEmbed({
   url,
@@ -46,7 +22,7 @@ export function VideoEmbed({
 }: {
   url: string;
   title: string;
-  /** Falls back to the YouTube thumbnail when omitted. */
+  /** Falls back to the provider's poster frame. Vimeo has none — set this. */
   thumbnailUrl?: string | null;
   aspect?: "video" | "portrait" | "square";
   className?: string;
@@ -54,7 +30,8 @@ export function VideoEmbed({
   overlayChildren?: React.ReactNode;
 }) {
   const [playing, setPlaying] = useState(false);
-  const id = youtubeId(url);
+  const [posterFailed, setPosterFailed] = useState(false);
+  const video = parseVideoUrl(url);
 
   const aspectClass =
     aspect === "portrait"
@@ -63,7 +40,10 @@ export function VideoEmbed({
         ? "aspect-square"
         : "aspect-video";
 
-  const poster = thumbnailUrl || (id ? thumbFor(id) : null);
+  // Vimeo exposes no poster from the id alone, and an admin-typed thumbnail can
+  // 404 at any time. Either way the card must still look deliberate.
+  const poster = thumbnailUrl || video?.poster || null;
+  const showPoster = poster !== null && !posterFailed;
 
   return (
     <div
@@ -73,10 +53,10 @@ export function VideoEmbed({
         className
       )}
     >
-      {playing && id ? (
+      {playing && video ? (
         <iframe
           className="absolute inset-0 size-full"
-          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+          src={video.embedSrc}
           title={title}
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -87,28 +67,36 @@ export function VideoEmbed({
         <button
           type="button"
           onClick={() => setPlaying(true)}
-          disabled={!id}
-          aria-label={id ? `Play video: ${title}` : title}
+          disabled={!video}
+          aria-label={video ? `Play video: ${title}` : title}
           className="group absolute inset-0 size-full cursor-pointer disabled:cursor-default"
         >
-          {poster ? (
+          {showPoster ? (
             <Image
               src={poster}
               alt=""
               fill
               unoptimized
+              onError={() => setPosterFailed(true)}
               className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
               sizes="(min-width: 1024px) 400px, 90vw"
             />
           ) : (
-            <span className="flex size-full items-center justify-center text-cream-faint">
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-stage-raised-2 bg-[radial-gradient(ellipse_at_50%_35%,rgba(232,169,59,0.18),transparent_65%)]"
+            />
+          )}
+
+          {!video && (
+            <span className="absolute inset-0 flex items-center justify-center px-4 text-center text-sm text-cream-faint">
               Video preview
             </span>
           )}
 
           <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
 
-          {id && (
+          {video && (
             <span className="absolute inset-0 flex items-center justify-center">
               <span className="flex size-16 items-center justify-center rounded-full bg-cream/90 shadow-raised transition-transform duration-200 group-hover:scale-105">
                 <Play className="size-6 fill-ink text-ink" />

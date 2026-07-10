@@ -114,12 +114,14 @@ export function WebinarForm({
           control={form.control}
           name="heroVideoUrl"
           label="Video URL"
-          description="Optional — link to the intro video"
+          placeholder="https://youtu.be/… or https://vimeo.com/…"
+          description="Optional — a YouTube or Vimeo link to the intro video"
         />
         <InputFormField
           control={form.control}
           name="heroVideoThumbnailUrl"
           label="Video thumbnail URL"
+          description="Defaults to the YouTube poster frame. Required for Vimeo, which has none."
         />
       </FormSection>
 

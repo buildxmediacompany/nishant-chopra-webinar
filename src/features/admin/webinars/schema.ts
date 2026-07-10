@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isEmbeddableOrEmpty, SUPPORTED_VIDEO_HOSTS } from "@/lib/video-url";
 
 const numericString = (label: string) =>
   z
@@ -28,7 +29,13 @@ export const webinarFormSchema = z.object({
   countdownTargetAt: z.string().optional(), // datetime-local string, optional
   heroHeadline: z.string().min(1, "Required"),
   heroSubheadline: z.string().optional(),
-  heroVideoUrl: z.string().optional(),
+  heroVideoUrl: z
+    .string()
+    .optional()
+    .refine(
+      isEmbeddableOrEmpty,
+      `That link can't be embedded. Paste a ${SUPPORTED_VIDEO_HOSTS} URL.`
+    ),
   heroVideoThumbnailUrl: z.string().optional(),
   eventDate: z.string().min(1, "Required"),
   eventTime: z.string().min(1, "Required"),

@@ -34,6 +34,8 @@ export function MentorBio({
                 alt={mentorName}
                 fill
                 loading="lazy"
+                // Admin-typed URL: an unlisted host must degrade, not 500 the page.
+                unoptimized
                 className="object-cover"
                 sizes="240px"
               />

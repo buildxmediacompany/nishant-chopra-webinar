@@ -51,8 +51,8 @@ export function TestimonialForm({
           control={form.control}
           name="videoUrl"
           label="Video review URL"
-          placeholder="https://youtu.be/… (Unlisted)"
-          description="Paste an Unlisted YouTube link to show this review as a video instead of text."
+          placeholder="https://youtu.be/… or https://vimeo.com/…"
+          description="Paste a YouTube or Vimeo link to show this review as a video instead of text."
         />
         <InputFormField
           control={form.control}
