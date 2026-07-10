@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "@/lib/get-session";
 import { AdminShell } from "@/features/admin/components/admin-shell";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function ProtectedAdminLayout({
   children,
@@ -13,5 +14,10 @@ export default async function ProtectedAdminLayout({
     redirect("/admin/login");
   }
 
-  return <AdminShell userName={session.user.name}>{children}</AdminShell>;
+  return (
+    <>
+      <AdminShell userName={session.user.name}>{children}</AdminShell>
+      <Toaster />
+    </>
+  );
 }

@@ -10,6 +10,7 @@ import {
   audienceSegments,
   faqs,
   siteSettings,
+  showcaseVideos,
 } from "@/db/schema";
 
 /**
@@ -33,6 +34,7 @@ export async function getWebinarPageData() {
     features,
     audience,
     faqList,
+    videos,
     [settings],
   ] = await Promise.all([
     db
@@ -57,6 +59,11 @@ export async function getWebinarPageData() {
       .where(eq(audienceSegments.isActive, true))
       .orderBy(asc(audienceSegments.order)),
     db.select().from(faqs).where(eq(faqs.isActive, true)).orderBy(asc(faqs.order)),
+    db
+      .select()
+      .from(showcaseVideos)
+      .where(eq(showcaseVideos.isActive, true))
+      .orderBy(asc(showcaseVideos.order)),
     db.select().from(siteSettings).where(eq(siteSettings.id, 1)),
   ]);
 
@@ -68,6 +75,7 @@ export async function getWebinarPageData() {
     features,
     audience,
     faqs: faqList,
+    showcaseVideos: videos,
     settings: settings ?? null,
   };
 }

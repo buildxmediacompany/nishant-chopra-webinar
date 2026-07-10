@@ -1,30 +1,43 @@
 import { Highlight } from "./highlight";
+import { cn } from "@/lib/utils";
 
 export function SectionHeading({
   eyebrow,
   title,
   subtitle,
   align = "center",
+  className,
 }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   align?: "center" | "left";
+  className?: string;
 }) {
+  const centered = align === "center";
   return (
-    <div className={align === "center" ? "text-center" : "text-left"}>
+    <div className={cn(centered ? "text-center" : "text-left", className)}>
       {eyebrow && (
-        <p className="font-utility text-sm font-semibold uppercase tracking-[0.2em] text-marigold">
+        <p
+          className={cn(
+            "font-utility text-sm font-semibold uppercase tracking-[0.22em] text-marigold",
+            centered ? "mx-auto" : ""
+          )}
+        >
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-2 font-display text-3xl font-semibold text-cream sm:text-4xl">
+      <h2
+        className={cn(
+          "font-display text-[1.75rem] font-semibold leading-[1.12] text-cream sm:text-4xl lg:text-[2.75rem]",
+          eyebrow ? "mt-3" : ""
+        )}
+      >
         <Highlight text={title} />
       </h2>
+      {/* Signature: a hand-drawn harkat (vocal ornament) that draws itself in. */}
       <svg
-        className={
-          align === "center" ? "mx-auto mt-3 h-3 w-24" : "mt-3 h-3 w-24"
-        }
+        className={cn("mt-4 h-3 w-24", centered ? "mx-auto" : "")}
         viewBox="0 0 96 12"
         fill="none"
         aria-hidden="true"
@@ -38,7 +51,12 @@ export function SectionHeading({
         />
       </svg>
       {subtitle && (
-        <p className="mx-auto mt-4 max-w-2xl font-body text-cream-dim">
+        <p
+          className={cn(
+            "mt-5 max-w-2xl font-body text-cream-dim",
+            centered ? "mx-auto" : ""
+          )}
+        >
           {subtitle}
         </p>
       )}

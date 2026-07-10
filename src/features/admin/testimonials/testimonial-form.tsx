@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { unstable_rethrow } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+import { AdminForm } from "@/features/admin/components/form-shell";
+import { FormSection } from "@/features/admin/components/form-section";
 import { InputFormField, TextareaFormField } from "@/features/admin/components/form-fields";
+import type { ActionResult } from "@/features/admin/action-result";
 import { testimonialFormSchema, type TestimonialFormValues } from "./schema";
 import type { testimonials } from "@/db/schema";
 
@@ -17,10 +16,8 @@ export function TestimonialForm({
   onSubmit,
 }: {
   testimonial?: Testimonial | null;
-  onSubmit: (values: TestimonialFormValues) => Promise<void>;
+  onSubmit: (values: TestimonialFormValues) => Promise<ActionResult>;
 }) {
-  const [submitError, setSubmitError] = useState<string | null>(null);
-
   const form = useForm<TestimonialFormValues>({
     resolver: zodResolver(testimonialFormSchema),
     defaultValues: {
@@ -29,44 +26,53 @@ export function TestimonialForm({
       quote: testimonial?.quote ?? "",
       rating: String(testimonial?.rating ?? 5),
       avatarUrl: testimonial?.avatarUrl ?? "",
+      videoUrl: testimonial?.videoUrl ?? "",
       order: String(testimonial?.order ?? 0),
     },
   });
 
-  async function handleSubmit(values: TestimonialFormValues) {
-    setSubmitError(null);
-    try {
-      await onSubmit(values);
-    } catch (err) {
-      unstable_rethrow(err);
-      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Try again.");
-    }
-  }
-
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-4">
-        {submitError && (
-          <p className="rounded-lg border border-sindoor/40 bg-sindoor-dim px-4 py-3 text-sm text-sindoor">
-            {submitError}
-          </p>
-        )}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <InputFormField control={form.control} name="name" label="Name" required />
-          <InputFormField control={form.control} name="location" label="Location" />
-        </div>
+    <AdminForm
+      form={form}
+      action={onSubmit}
+      backHref="/admin/testimonials"
+      submitLabel={testimonial ? "Save changes" : "Create review"}
+      successMessage={testimonial ? "Review saved" : "Review created"}
+    >
+      <FormSection title="Student" columns={2} description="Who left this review.">
+        <InputFormField control={form.control} name="name" label="Name" required />
+        <InputFormField control={form.control} name="location" label="Location" />
+        <InputFormField control={form.control} name="avatarUrl" label="Avatar URL" full />
+      </FormSection>
+
+      <FormSection title="Review" description="Text review, or a video that replaces it.">
         <TextareaFormField control={form.control} name="quote" label="Quote" required />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <InputFormField control={form.control} name="rating" label="Rating (1–5)" type="number" required />
-          <InputFormField control={form.control} name="avatarUrl" label="Avatar URL" />
-          <InputFormField control={form.control} name="order" label="Display order" type="number" required />
-        </div>
-        <div className="flex justify-end border-t border-stage-line pt-6">
-          <Button type="submit" variant="gold" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Saving…" : testimonial ? "Save changes" : "Create"}
-          </Button>
-        </div>
-      </form>
-    </Form>
+        <InputFormField
+          control={form.control}
+          name="videoUrl"
+          label="Video review URL"
+          placeholder="https://youtu.be/… (Unlisted)"
+          description="Paste an Unlisted YouTube link to show this review as a video instead of text."
+        />
+        <InputFormField
+          control={form.control}
+          name="rating"
+          label="Rating (1–5)"
+          type="number"
+          required
+        />
+      </FormSection>
+
+      <FormSection title="Display">
+        <InputFormField
+          control={form.control}
+          name="order"
+          label="Display order"
+          type="number"
+          required
+          description="Lower numbers appear first."
+        />
+      </FormSection>
+    </AdminForm>
   );
 }

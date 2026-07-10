@@ -8,6 +8,9 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "placehold.co" },
       { protocol: "https", hostname: "i.pravatar.cc" },
       { protocol: "https", hostname: "picsum.photos" },
+      // YouTube poster frames for hero / testimonial / showcase embeds.
+      { protocol: "https", hostname: "i.ytimg.com" },
+      { protocol: "https", hostname: "img.youtube.com" },
     ],
   },
 };

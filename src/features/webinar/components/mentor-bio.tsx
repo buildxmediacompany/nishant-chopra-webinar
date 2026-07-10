@@ -1,5 +1,8 @@
 import Image from "next/image";
+import { BadgeCheck } from "lucide-react";
+import { Section } from "./section";
 import { SectionHeading } from "./section-heading";
+import { Reveal } from "./reveal";
 
 export function MentorBio({
   mentorName,
@@ -19,46 +22,52 @@ export function MentorBio({
     : [];
 
   return (
-    <section className="px-4 py-16">
-      <div className="mx-auto max-w-4xl">
-        <SectionHeading title="Meet Your {gold}Mentor{/gold}" />
-        <div className="mt-10 flex flex-col items-center gap-8 sm:flex-row sm:items-start">
-          <div className="relative aspect-[5/6] w-full max-w-[220px] shrink-0 overflow-hidden rounded-2xl border border-stage-line">
+    <Section tone="base" width="medium" pad="lg">
+      <SectionHeading title="Meet Your {gold}Mentor{/gold}" />
+
+      <Reveal className="mt-12">
+        <div className="grid grid-cols-1 items-center gap-8 sm:grid-cols-[240px_1fr] sm:gap-12">
+          <div className="relative mx-auto aspect-[4/5] w-full max-w-[240px] overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/15">
             {mentorPhotoUrl && (
               <Image
                 src={mentorPhotoUrl}
                 alt={mentorName}
                 fill
+                loading="lazy"
                 className="object-cover"
-                sizes="220px"
+                sizes="240px"
               />
             )}
           </div>
+
           <div className="text-center sm:text-left">
-            <h3 className="font-display text-2xl font-semibold text-cream">
+            <h3 className="font-display text-2xl font-semibold text-cream sm:text-3xl">
               {mentorName}
             </h3>
-            <p className="mt-1 font-utility text-sm uppercase tracking-wide text-marigold">
+            <p className="mt-1.5 font-utility text-sm uppercase tracking-[0.14em] text-marigold">
               {mentorTagline}
             </p>
             {mentorBio && (
-              <p className="mt-4 font-body text-cream-dim leading-relaxed">{mentorBio}</p>
+              <p className="mt-5 font-body leading-relaxed text-cream-dim">
+                {mentorBio}
+              </p>
             )}
             {badges.length > 0 && (
-              <div className="mt-5 flex flex-wrap justify-center gap-2 sm:justify-start">
+              <ul className="mt-6 flex flex-wrap justify-center gap-2.5 sm:justify-start">
                 {badges.map((b) => (
-                  <span
+                  <li
                     key={b}
-                    className="rounded-full bg-marigold-dim px-3 py-1 font-utility text-xs font-semibold uppercase tracking-wide text-marigold"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-marigold-dim px-3.5 py-1.5 font-utility text-xs font-semibold uppercase tracking-wide text-marigold"
                   >
+                    <BadgeCheck className="size-3.5" />
                     {b}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
           </div>
         </div>
-      </div>
-    </section>
+      </Reveal>
+    </Section>
   );
 }

@@ -1,4 +1,6 @@
+import { Section } from "./section";
 import { SectionHeading } from "./section-heading";
+import { Reveal } from "./reveal";
 import {
   Accordion,
   AccordionContent,
@@ -14,23 +16,25 @@ export function FaqSection({
   if (faqs.length === 0) return null;
 
   return (
-    <section className="px-4 py-16">
-      <div className="mx-auto max-w-3xl">
-        <p className="text-center font-utility text-xs uppercase tracking-[0.2em] text-cream-faint">
-          Still Not Sure?
-        </p>
-        <SectionHeading title="Frequently Asked {gold}Questions{/gold}" />
-        <Accordion type="single" collapsible className="mt-10">
-          {faqs.map((faq, i) => (
-            <AccordionItem key={faq.id} value={faq.id}>
-              <AccordionTrigger>
-                {i + 1}. {faq.question}
+    <Section tone="raised" width="narrow" pad="lg">
+      <SectionHeading
+        eyebrow="Still not sure?"
+        title="Frequently Asked {gold}Questions{/gold}"
+      />
+      {/* No card per question — a hairline is enough separation, and the
+          generous vertical padding keeps the click targets large. */}
+      <Reveal className="mt-12">
+        <Accordion type="single" collapsible>
+          {faqs.map((faq) => (
+            <AccordionItem key={faq.id} value={faq.id} className="border-stage-line">
+              <AccordionTrigger className="py-6 text-[15px]">
+                {faq.question}
               </AccordionTrigger>
               <AccordionContent>{faq.answer}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
-      </div>
-    </section>
+      </Reveal>
+    </Section>
   );
 }

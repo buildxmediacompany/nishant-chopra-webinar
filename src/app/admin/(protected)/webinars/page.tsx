@@ -2,7 +2,9 @@ import Link from "next/link";
 import { Plus, Pencil, CheckCircle2 } from "lucide-react";
 import { listWebinars } from "@/features/admin/webinars/queries";
 import { deleteWebinarAction, setActiveWebinarAction } from "@/features/admin/webinars/actions";
+import { SetLiveButton } from "@/features/admin/webinars/set-live-button";
 import { Button } from "@/components/ui/button";
+import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { DeleteButton } from "@/features/admin/components/delete-button";
 import { formatPaise } from "@/lib/utils";
 
@@ -11,22 +13,24 @@ export default async function WebinarsListPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-semibold text-cream">Webinars</h1>
-          <p className="mt-1 text-sm text-cream-dim">
+      <AdminPageHeader
+        title="Webinars"
+        description={
+          <>
             The public page always shows whichever webinar is marked{" "}
             <span className="text-marigold">Live</span>.
-          </p>
-        </div>
-        <Button asChild variant="gold">
-          <Link href="/admin/webinars/new">
-            <Plus className="size-4" /> New Webinar
-          </Link>
-        </Button>
-      </div>
+          </>
+        }
+        actions={
+          <Button asChild variant="gold">
+            <Link href="/admin/webinars/new">
+              <Plus className="size-4" /> New Webinar
+            </Link>
+          </Button>
+        }
+      />
 
-      <div className="mt-8 overflow-hidden rounded-xl border border-stage-line">
+      <div className="overflow-x-auto rounded-xl border border-stage-line">
         <table className="w-full text-left text-sm">
           <thead className="bg-stage-raised text-cream-dim">
             <tr>
@@ -34,14 +38,16 @@ export default async function WebinarsListPage() {
               <th className="px-4 py-3 font-medium">Event date</th>
               <th className="px-4 py-3 font-medium">Price</th>
               <th className="px-4 py-3 font-medium">Status</th>
-              <th className="px-4 py-3 font-medium text-right">Actions</th>
+              <th className="px-4 py-3 text-right font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
             {webinarList.map((w) => (
               <tr key={w.id} className="border-t border-stage-line">
                 <td className="px-4 py-3 text-cream">{w.slug}</td>
-                <td className="px-4 py-3 text-cream-dim">{w.eventDate} · {w.eventTime}</td>
+                <td className="px-4 py-3 text-cream-dim">
+                  {w.eventDate} · {w.eventTime}
+                </td>
                 <td className="px-4 py-3 text-cream-dim">{formatPaise(w.offerPricePaise)}</td>
                 <td className="px-4 py-3">
                   {w.isActive ? (
@@ -49,14 +55,10 @@ export default async function WebinarsListPage() {
                       <CheckCircle2 className="size-3.5" /> Live
                     </span>
                   ) : (
-                    <form action={setActiveWebinarAction.bind(null, w.id)}>
-                      <button
-                        type="submit"
-                        className="rounded-full border border-stage-line px-2.5 py-1 text-xs text-cream-dim transition-colors hover:border-marigold hover:text-marigold"
-                      >
-                        Set as Live
-                      </button>
-                    </form>
+                    <SetLiveButton
+                      slug={w.slug}
+                      action={setActiveWebinarAction.bind(null, w.id)}
+                    />
                   )}
                 </td>
                 <td className="px-4 py-3">
@@ -70,6 +72,7 @@ export default async function WebinarsListPage() {
                     <DeleteButton
                       action={deleteWebinarAction.bind(null, w.id)}
                       confirmMessage={`Delete "${w.slug}"? This can't be undone.`}
+                      successMessage={`Deleted ${w.slug}`}
                     />
                   </div>
                 </td>

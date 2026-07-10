@@ -1,7 +1,7 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { runAction, runMutation, type ActionResult } from "@/features/admin/action-result";
 import { screenshotFormSchema, type ScreenshotFormValues } from "./schema";
 import {
   createScreenshot,
@@ -10,32 +10,45 @@ import {
   setScreenshotActive,
 } from "./queries";
 
-export async function createScreenshotAction(values: ScreenshotFormValues) {
-  const parsed = screenshotFormSchema.parse(values);
-  await createScreenshot(parsed);
-  revalidatePath("/admin/testimonial-screenshots");
-  revalidatePath("/");
-  redirect("/admin/testimonial-screenshots");
-}
-
-export async function updateScreenshotAction(id: string, values: ScreenshotFormValues) {
-  const parsed = screenshotFormSchema.parse(values);
-  await updateScreenshot(id, parsed);
-  revalidatePath("/admin/testimonial-screenshots");
-  revalidatePath("/");
-  redirect("/admin/testimonial-screenshots");
-}
-
-export async function deleteScreenshotAction(id: string) {
-  "use server";
-  await deleteScreenshot(id);
+function revalidate() {
   revalidatePath("/admin/testimonial-screenshots");
   revalidatePath("/");
 }
 
-export async function setScreenshotActiveAction(id: string, isActive: boolean) {
-  "use server";
-  await setScreenshotActive(id, isActive);
-  revalidatePath("/admin/testimonial-screenshots");
-  revalidatePath("/");
+export async function createScreenshotAction(
+  values: ScreenshotFormValues
+): Promise<ActionResult> {
+  return runAction(screenshotFormSchema, values, "Creating the screenshot", async (parsed) => {
+    await createScreenshot(parsed);
+    revalidate();
+    return { redirectTo: "/admin/testimonial-screenshots" };
+  });
+}
+
+export async function updateScreenshotAction(
+  id: string,
+  values: ScreenshotFormValues
+): Promise<ActionResult> {
+  return runAction(screenshotFormSchema, values, "Saving the screenshot", async (parsed) => {
+    await updateScreenshot(id, parsed);
+    revalidate();
+    return { redirectTo: "/admin/testimonial-screenshots" };
+  });
+}
+
+export async function deleteScreenshotAction(id: string): Promise<ActionResult> {
+  return runMutation("Deleting the screenshot", async () => {
+    await deleteScreenshot(id);
+    revalidate();
+  });
+}
+
+export async function setScreenshotActiveAction(
+  id: string,
+  isActive: boolean
+): Promise<ActionResult> {
+  return runMutation("Updating the screenshot", async () => {
+    await setScreenshotActive(id, isActive);
+    revalidate();
+  });
 }

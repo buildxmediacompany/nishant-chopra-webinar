@@ -95,7 +95,11 @@ export const testimonialScreenshots = pgTable("testimonial_screenshots", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-/** "Hear From Our Students" styled quote cards */
+/**
+ * "Hear From Our Students" cards. When `videoUrl` is set (an Unlisted YouTube
+ * link), the card renders as a video testimonial; otherwise it falls back to
+ * the text quote. Both shapes coexist so existing text reviews keep working.
+ */
 export const testimonials = pgTable("testimonials", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
@@ -103,6 +107,21 @@ export const testimonials = pgTable("testimonials", {
   quote: text("quote").notNull(),
   rating: integer("rating").notNull().default(5),
   avatarUrl: text("avatar_url"),
+  videoUrl: text("video_url"),
+  order: integer("order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/**
+ * "Watch Nishant Sing" — the mentor's best-performing short singing clips,
+ * hosted Unlisted on YouTube and embedded here as proof of expertise.
+ */
+export const showcaseVideos = pgTable("showcase_videos", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  title: text("title").notNull(),
+  videoUrl: text("video_url").notNull(),
+  thumbnailUrl: text("thumbnail_url"), // optional override; else YouTube poster
   order: integer("order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

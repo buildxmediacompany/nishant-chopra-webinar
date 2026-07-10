@@ -1,13 +1,16 @@
+import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { AudienceForm } from "@/features/admin/audience/audience-form";
 import { createAudienceSegmentAction } from "@/features/admin/audience/actions";
 
 export default function NewAudienceSegmentPage() {
   return (
-    <div className="max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-cream">New audience segment</h1>
-      <div className="mt-8">
-        <AudienceForm onSubmit={createAudienceSegmentAction} />
-      </div>
+    <div className="mx-auto max-w-3xl">
+      <AdminPageHeader
+        title="New segment"
+        backHref="/admin/audience"
+        backLabel="Back to Who It's For"
+      />
+      <AudienceForm onSubmit={createAudienceSegmentAction} />
     </div>
   );
 }

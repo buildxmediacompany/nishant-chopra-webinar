@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { getTestimonialById } from "@/features/admin/testimonials/queries";
 import { updateTestimonialAction } from "@/features/admin/testimonials/actions";
 import { TestimonialForm } from "@/features/admin/testimonials/testimonial-form";
@@ -13,11 +14,17 @@ export default async function EditTestimonialPage({
   if (!testimonial) notFound();
 
   return (
-    <div className="max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-cream">Edit testimonial</h1>
-      <div className="mt-8">
-        <TestimonialForm testimonial={testimonial} onSubmit={updateTestimonialAction.bind(null, id)} />
-      </div>
+    <div className="mx-auto max-w-3xl">
+      <AdminPageHeader
+        title="Edit review"
+        description={testimonial.name}
+        backHref="/admin/testimonials"
+        backLabel="Back to testimonials"
+      />
+      <TestimonialForm
+        testimonial={testimonial}
+        onSubmit={updateTestimonialAction.bind(null, id)}
+      />
     </div>
   );
 }

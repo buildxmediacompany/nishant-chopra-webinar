@@ -12,6 +12,8 @@ export const testimonialFormSchema = z.object({
   quote: z.string().min(1, "Required"),
   rating: numericString("Rating"),
   avatarUrl: z.string().optional(),
+  /** Unlisted YouTube link. When set, the card renders as a video testimonial. */
+  videoUrl: z.string().optional(),
   order: numericString("Order"),
 });
 

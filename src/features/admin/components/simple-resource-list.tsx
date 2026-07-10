@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Plus, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AdminPageHeader } from "./page-header";
 import { DeleteButton } from "./delete-button";
 import { ActiveToggle } from "./active-toggle";
+import type { ActionResult } from "@/features/admin/action-result";
 
 export function SimpleResourceList<T extends { id: string; isActive: boolean }>({
   title,
@@ -23,25 +25,25 @@ export function SimpleResourceList<T extends { id: string; isActive: boolean }>(
   renderSecondary?: (item: T) => React.ReactNode;
   editHref: (item: T) => string;
   /** Return the real server action bound to this item, e.g. `(item) => toggleXAction.bind(null, item.id)` */
-  toggleActiveActionFor: (item: T) => (checked: boolean) => Promise<void>;
+  toggleActiveActionFor: (item: T) => (checked: boolean) => Promise<ActionResult>;
   /** Return the real server action bound to this item, e.g. `(item) => deleteXAction.bind(null, item.id)` */
-  deleteActionFor: (item: T) => () => Promise<void>;
+  deleteActionFor: (item: T) => () => Promise<ActionResult>;
 }) {
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-semibold text-cream">{title}</h1>
-          {description && <p className="mt-1 text-sm text-cream-dim">{description}</p>}
-        </div>
-        <Button asChild variant="gold">
-          <Link href={newHref}>
-            <Plus className="size-4" /> New
-          </Link>
-        </Button>
-      </div>
+      <AdminPageHeader
+        title={title}
+        description={description}
+        actions={
+          <Button asChild variant="gold">
+            <Link href={newHref}>
+              <Plus className="size-4" /> New
+            </Link>
+          </Button>
+        }
+      />
 
-      <div className="mt-8 flex flex-col gap-3">
+      <div className="flex flex-col gap-3">
         {items.map((item) => (
           <div
             key={item.id}

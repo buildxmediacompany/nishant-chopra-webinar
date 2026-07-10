@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { getFaqById } from "@/features/admin/faqs/queries";
 import { updateFaqAction } from "@/features/admin/faqs/actions";
 import { FaqForm } from "@/features/admin/faqs/faq-form";
@@ -9,11 +10,14 @@ export default async function EditFaqPage({ params }: { params: Promise<{ id: st
   if (!faq) notFound();
 
   return (
-    <div className="max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-cream">Edit FAQ</h1>
-      <div className="mt-8">
-        <FaqForm faq={faq} onSubmit={updateFaqAction.bind(null, id)} />
-      </div>
+    <div className="mx-auto max-w-3xl">
+      <AdminPageHeader
+        title="Edit FAQ"
+        description={faq.question}
+        backHref="/admin/faqs"
+        backLabel="Back to FAQs"
+      />
+      <FaqForm faq={faq} onSubmit={updateFaqAction.bind(null, id)} />
     </div>
   );
 }

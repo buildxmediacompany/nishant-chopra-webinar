@@ -1,36 +1,47 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { runAction, runMutation, type ActionResult } from "@/features/admin/action-result";
 import { faqFormSchema, type FaqFormValues } from "./schema";
 import { createFaq, updateFaq, deleteFaq, setFaqActive } from "./queries";
 
-export async function createFaqAction(values: FaqFormValues) {
-  const parsed = faqFormSchema.parse(values);
-  await createFaq(parsed);
-  revalidatePath("/admin/faqs");
-  revalidatePath("/");
-  redirect("/admin/faqs");
-}
-
-export async function updateFaqAction(id: string, values: FaqFormValues) {
-  const parsed = faqFormSchema.parse(values);
-  await updateFaq(id, parsed);
-  revalidatePath("/admin/faqs");
-  revalidatePath("/");
-  redirect("/admin/faqs");
-}
-
-export async function deleteFaqAction(id: string) {
-  "use server";
-  await deleteFaq(id);
+function revalidate() {
   revalidatePath("/admin/faqs");
   revalidatePath("/");
 }
 
-export async function setFaqActiveAction(id: string, isActive: boolean) {
-  "use server";
-  await setFaqActive(id, isActive);
-  revalidatePath("/admin/faqs");
-  revalidatePath("/");
+export async function createFaqAction(values: FaqFormValues): Promise<ActionResult> {
+  return runAction(faqFormSchema, values, "Creating the FAQ", async (parsed) => {
+    await createFaq(parsed);
+    revalidate();
+    return { redirectTo: "/admin/faqs" };
+  });
+}
+
+export async function updateFaqAction(
+  id: string,
+  values: FaqFormValues
+): Promise<ActionResult> {
+  return runAction(faqFormSchema, values, "Saving the FAQ", async (parsed) => {
+    await updateFaq(id, parsed);
+    revalidate();
+    return { redirectTo: "/admin/faqs" };
+  });
+}
+
+export async function deleteFaqAction(id: string): Promise<ActionResult> {
+  return runMutation("Deleting the FAQ", async () => {
+    await deleteFaq(id);
+    revalidate();
+  });
+}
+
+export async function setFaqActiveAction(
+  id: string,
+  isActive: boolean
+): Promise<ActionResult> {
+  return runMutation("Updating the FAQ", async () => {
+    await setFaqActive(id, isActive);
+    revalidate();
+  });
 }

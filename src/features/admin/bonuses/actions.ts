@@ -1,36 +1,47 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { runAction, runMutation, type ActionResult } from "@/features/admin/action-result";
 import { bonusFormSchema, type BonusFormValues } from "./schema";
 import { createBonus, updateBonus, deleteBonus, setBonusActive } from "./queries";
 
-export async function createBonusAction(values: BonusFormValues) {
-  const parsed = bonusFormSchema.parse(values);
-  await createBonus(parsed);
-  revalidatePath("/admin/bonuses");
-  revalidatePath("/");
-  redirect("/admin/bonuses");
-}
-
-export async function updateBonusAction(id: string, values: BonusFormValues) {
-  const parsed = bonusFormSchema.parse(values);
-  await updateBonus(id, parsed);
-  revalidatePath("/admin/bonuses");
-  revalidatePath("/");
-  redirect("/admin/bonuses");
-}
-
-export async function deleteBonusAction(id: string) {
-  "use server";
-  await deleteBonus(id);
+function revalidate() {
   revalidatePath("/admin/bonuses");
   revalidatePath("/");
 }
 
-export async function setBonusActiveAction(id: string, isActive: boolean) {
-  "use server";
-  await setBonusActive(id, isActive);
-  revalidatePath("/admin/bonuses");
-  revalidatePath("/");
+export async function createBonusAction(values: BonusFormValues): Promise<ActionResult> {
+  return runAction(bonusFormSchema, values, "Creating the bonus", async (parsed) => {
+    await createBonus(parsed);
+    revalidate();
+    return { redirectTo: "/admin/bonuses" };
+  });
+}
+
+export async function updateBonusAction(
+  id: string,
+  values: BonusFormValues
+): Promise<ActionResult> {
+  return runAction(bonusFormSchema, values, "Saving the bonus", async (parsed) => {
+    await updateBonus(id, parsed);
+    revalidate();
+    return { redirectTo: "/admin/bonuses" };
+  });
+}
+
+export async function deleteBonusAction(id: string): Promise<ActionResult> {
+  return runMutation("Deleting the bonus", async () => {
+    await deleteBonus(id);
+    revalidate();
+  });
+}
+
+export async function setBonusActiveAction(
+  id: string,
+  isActive: boolean
+): Promise<ActionResult> {
+  return runMutation("Updating the bonus", async () => {
+    await setBonusActive(id, isActive);
+    revalidate();
+  });
 }

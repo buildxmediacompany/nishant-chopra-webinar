@@ -1,36 +1,49 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { runAction, runMutation, type ActionResult } from "@/features/admin/action-result";
 import { featureFormSchema, type FeatureFormValues } from "./schema";
 import { createFeature, updateFeature, deleteFeature, setFeatureActive } from "./queries";
 
-export async function createFeatureAction(values: FeatureFormValues) {
-  const parsed = featureFormSchema.parse(values);
-  await createFeature(parsed);
-  revalidatePath("/admin/features");
-  revalidatePath("/");
-  redirect("/admin/features");
-}
-
-export async function updateFeatureAction(id: string, values: FeatureFormValues) {
-  const parsed = featureFormSchema.parse(values);
-  await updateFeature(id, parsed);
-  revalidatePath("/admin/features");
-  revalidatePath("/");
-  redirect("/admin/features");
-}
-
-export async function deleteFeatureAction(id: string) {
-  "use server";
-  await deleteFeature(id);
+function revalidate() {
   revalidatePath("/admin/features");
   revalidatePath("/");
 }
 
-export async function setFeatureActiveAction(id: string, isActive: boolean) {
-  "use server";
-  await setFeatureActive(id, isActive);
-  revalidatePath("/admin/features");
-  revalidatePath("/");
+export async function createFeatureAction(
+  values: FeatureFormValues
+): Promise<ActionResult> {
+  return runAction(featureFormSchema, values, "Creating the highlight", async (parsed) => {
+    await createFeature(parsed);
+    revalidate();
+    return { redirectTo: "/admin/features" };
+  });
+}
+
+export async function updateFeatureAction(
+  id: string,
+  values: FeatureFormValues
+): Promise<ActionResult> {
+  return runAction(featureFormSchema, values, "Saving the highlight", async (parsed) => {
+    await updateFeature(id, parsed);
+    revalidate();
+    return { redirectTo: "/admin/features" };
+  });
+}
+
+export async function deleteFeatureAction(id: string): Promise<ActionResult> {
+  return runMutation("Deleting the highlight", async () => {
+    await deleteFeature(id);
+    revalidate();
+  });
+}
+
+export async function setFeatureActiveAction(
+  id: string,
+  isActive: boolean
+): Promise<ActionResult> {
+  return runMutation("Updating the highlight", async () => {
+    await setFeatureActive(id, isActive);
+    revalidate();
+  });
 }

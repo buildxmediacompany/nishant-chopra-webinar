@@ -13,8 +13,18 @@ export async function getTestimonialById(id: string) {
   return row ?? null;
 }
 
+/** Empty optional inputs are stored as NULL, so `videoUrl` stays falsy. */
+const nullIfBlank = (v: string | undefined) => (v && v.trim() !== "" ? v.trim() : null);
+
 function toDbValues(values: TestimonialFormValues) {
-  return { ...values, rating: Number(values.rating), order: Number(values.order) };
+  return {
+    ...values,
+    rating: Number(values.rating),
+    order: Number(values.order),
+    location: nullIfBlank(values.location),
+    avatarUrl: nullIfBlank(values.avatarUrl),
+    videoUrl: nullIfBlank(values.videoUrl),
+  };
 }
 
 export async function createTestimonial(values: TestimonialFormValues) {

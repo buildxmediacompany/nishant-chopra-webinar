@@ -13,6 +13,7 @@ import {
   HelpCircle,
   Settings,
   LogOut,
+  Clapperboard,
 } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ const NAV = [
   { href: "/admin/webinars", label: "Webinars", icon: Video },
   { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
   { href: "/admin/testimonial-screenshots", label: "Review Screenshots", icon: Images },
+  { href: "/admin/showcase-videos", label: "Singing Videos", icon: Clapperboard },
   { href: "/admin/bonuses", label: "Bonuses", icon: Gift },
   { href: "/admin/features", label: "Why It Works", icon: Sparkles },
   { href: "/admin/audience", label: "Who It's For", icon: Users },
@@ -40,8 +42,8 @@ export function AdminShell({
   const router = useRouter();
 
   return (
-    <div className="flex min-h-screen bg-stage">
-      <aside className="hidden w-64 shrink-0 border-r border-stage-line bg-stage-raised px-4 py-6 sm:block">
+    <div className="flex h-dvh overflow-hidden bg-stage">
+      <aside className="hidden w-64 shrink-0 overflow-y-auto border-r border-stage-line bg-stage-raised px-4 py-6 sm:block">
         <p className="px-2 font-display text-lg font-semibold text-cream">Admin Panel</p>
         <nav className="mt-6 flex flex-col gap-1">
           {NAV.map((item) => {
@@ -64,8 +66,8 @@ export function AdminShell({
         </nav>
       </aside>
 
-      <div className="flex min-h-screen flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-stage-line px-6 py-4">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <header className="flex shrink-0 items-center justify-between border-b border-stage-line px-6 py-4">
           <p className="text-sm text-cream-dim">
             Signed in as <span className="text-cream">{userName}</span>
           </p>
@@ -81,7 +83,9 @@ export function AdminShell({
             Sign out
           </button>
         </header>
-        <main className="flex-1 px-6 py-8">{children}</main>
+        <main className="min-h-0 flex-1 overflow-y-auto px-6 py-8">
+          <div className="mx-auto w-full max-w-6xl">{children}</div>
+        </main>
       </div>
     </div>
   );

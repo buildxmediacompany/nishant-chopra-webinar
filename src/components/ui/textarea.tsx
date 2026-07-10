@@ -1,16 +1,9 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { fieldBase } from "./field-base";
 
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
-  return (
-    <textarea
-      className={cn(
-        "flex min-h-24 w-full rounded-lg border border-stage-line bg-stage px-3 py-2 text-sm text-cream placeholder:text-cream-faint outline-none transition-colors focus:border-marigold disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      )}
-      {...props}
-    />
-  );
+  return <textarea className={cn(fieldBase, "min-h-28 resize-y", className)} {...props} />;
 }
 
 export { Textarea };

@@ -10,6 +10,9 @@ import { MentorBio } from "@/features/webinar/components/mentor-bio";
 import { FaqSection } from "@/features/webinar/components/faq-section";
 import { ClosingCta } from "@/features/webinar/components/closing-cta";
 import { SiteFooter } from "@/features/webinar/components/site-footer";
+import { MobileCtaBar } from "@/features/webinar/components/mobile-cta-bar";
+import { ShowcaseVideos } from "@/features/webinar/components/showcase-videos";
+import { ValueBand } from "@/features/webinar/components/value-band";
 
 // Always fetch fresh data — admin edits should show up immediately.
 export const dynamic = "force-dynamic";
@@ -31,8 +34,17 @@ export default async function HomePage() {
     );
   }
 
-  const { webinar, screenshots, testimonials, bonuses, features, audience, faqs, settings } =
-    data;
+  const {
+    webinar,
+    screenshots,
+    testimonials,
+    bonuses,
+    features,
+    audience,
+    faqs,
+    showcaseVideos,
+    settings,
+  } = data;
 
   return (
     <main className="min-h-screen">
@@ -46,6 +58,7 @@ export default async function HomePage() {
       <Hero
         heroHeadline={webinar.heroHeadline}
         heroSubheadline={webinar.heroSubheadline}
+        heroVideoUrl={webinar.heroVideoUrl}
         heroVideoThumbnailUrl={webinar.heroVideoThumbnailUrl}
         eventDate={webinar.eventDate}
         eventTime={webinar.eventTime}
@@ -63,17 +76,19 @@ export default async function HomePage() {
 
       <FeatureGrid features={features} />
 
+      <ShowcaseVideos videos={showcaseVideos} />
+
       <AudienceGrid segments={audience} />
 
       <TestimonialGrid testimonials={testimonials} />
+
+      <ValueBand />
 
       <BonusStack
         bonuses={bonuses}
         offerPricePaise={webinar.offerPricePaise}
         registrationUrl={webinar.registrationUrl}
       />
-
-      <ScreenshotGrid screenshots={screenshots} />
 
       <MentorBio
         mentorName={webinar.mentorName}
@@ -95,6 +110,12 @@ export default async function HomePage() {
         supportEmail={settings?.supportEmail}
         supportPhone={settings?.supportPhone}
         footerText={settings?.footerText}
+      />
+
+      <MobileCtaBar
+        registrationUrl={webinar.registrationUrl}
+        offerPricePaise={webinar.offerPricePaise}
+        seatsLeftText={webinar.seatsLeftText}
       />
     </main>
   );
