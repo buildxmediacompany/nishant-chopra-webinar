@@ -2,6 +2,7 @@ import { Lock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatPaise } from "@/lib/utils";
 import { cn } from "@/lib/utils";
+import { SeatsLeftTicker } from "./seats-left-ticker";
 
 /**
  * The registration call-to-action: primary button + urgency + trust signals.
@@ -25,18 +26,14 @@ export function CtaBanner({
         asChild
         variant="cta"
         size="lg"
-        className="w-full text-base transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)]"
+        className="h-11 w-full text-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)] sm:h-12 sm:text-base"
       >
         <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
           Register Now — {formatPaise(offerPricePaise)}/- Only
         </a>
       </Button>
 
-      {seatsLeftText && (
-        <p className="font-utility text-sm font-medium uppercase tracking-wide text-marigold-soft">
-          {seatsLeftText}
-        </p>
-      )}
+      {seatsLeftText && <SeatsLeftTicker text={seatsLeftText} />}
 
       <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-cream-dim">
         <span className="inline-flex items-center gap-1.5">

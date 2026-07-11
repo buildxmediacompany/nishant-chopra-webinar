@@ -12,6 +12,9 @@ import { ClosingCta } from "@/features/webinar/components/closing-cta";
 import { SiteFooter } from "@/features/webinar/components/site-footer";
 import { MobileCtaBar } from "@/features/webinar/components/mobile-cta-bar";
 import { ShowcaseVideos } from "@/features/webinar/components/showcase-videos";
+import { RegistrationToast } from "@/features/webinar/components/registration-toast";
+import { SectionCta } from "@/features/webinar/components/section-cta";
+import { ViewersWatching } from "@/features/webinar/components/viewers-watching";
 import { ValueBand } from "@/features/webinar/components/value-band";
 
 // Always fetch fresh data — admin edits should show up immediately.
@@ -46,14 +49,18 @@ export default async function HomePage() {
     settings,
   } = data;
 
+  const ctaProps = {
+    registrationUrl: webinar.registrationUrl,
+    offerPricePaise: webinar.offerPricePaise,
+  };
+
   return (
     <main className="min-h-screen">
-      <AnnouncementBar
+      {/* <AnnouncementBar
         text={webinar.announcementBarText}
-        countdownTargetAt={webinar.countdownTargetAt}
         registrationUrl={webinar.registrationUrl}
         offerPricePaise={webinar.offerPricePaise}
-      />
+      /> */}
 
       <Hero
         heroHeadline={webinar.heroHeadline}
@@ -73,16 +80,21 @@ export default async function HomePage() {
       />
 
       <ScreenshotGrid screenshots={screenshots} />
+      <SectionCta {...ctaProps} />
 
       <FeatureGrid features={features} />
+      <SectionCta {...ctaProps} />
 
       <ShowcaseVideos videos={showcaseVideos} />
+      {/* <SectionCta {...ctaProps} /> */}
 
       <AudienceGrid segments={audience} />
+      <SectionCta {...ctaProps} />
 
       <TestimonialGrid testimonials={testimonials} />
+      <SectionCta {...ctaProps} />
 
-      <ValueBand />
+      {/* <ValueBand /> */}
 
       <BonusStack
         bonuses={bonuses}
@@ -97,6 +109,7 @@ export default async function HomePage() {
         mentorPhotoUrl={webinar.mentorPhotoUrl}
         mentorBadges={webinar.mentorBadges}
       />
+      <SectionCta {...ctaProps} />
 
       <FaqSection faqs={faqs} />
 
@@ -107,9 +120,11 @@ export default async function HomePage() {
       />
 
       <SiteFooter
+        siteName={settings?.siteName}
         supportEmail={settings?.supportEmail}
         supportPhone={settings?.supportPhone}
         footerText={settings?.footerText}
+        registrationUrl={webinar.registrationUrl}
       />
 
       <MobileCtaBar
@@ -117,6 +132,13 @@ export default async function HomePage() {
         offerPricePaise={webinar.offerPricePaise}
         seatsLeftText={webinar.seatsLeftText}
       />
+
+      {/* Same live-signup nudge on desktop — fixed bottom-left, phones use the
+          copy inside MobileCtaBar instead. */}
+      <RegistrationToast className="fixed bottom-6 left-6 z-40 hidden w-80 sm:block" />
+
+      {/* Floating live-viewers pill, top-right on every breakpoint. */}
+      <ViewersWatching className="fixed right-3 top-3 z-40 shadow-raised backdrop-blur sm:right-5 sm:top-5" />
     </main>
   );
 }

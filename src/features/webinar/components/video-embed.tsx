@@ -19,6 +19,7 @@ export function VideoEmbed({
   aspect = "video",
   className,
   overlayChildren,
+  autoPlay = false,
 }: {
   url: string;
   title: string;
@@ -28,10 +29,19 @@ export function VideoEmbed({
   className?: string;
   /** Rendered above the thumbnail while unplayed (badges, captions). */
   overlayChildren?: React.ReactNode;
+  /** Start playing on mount. Forced muted — browsers block audible autoplay. */
+  autoPlay?: boolean;
 }) {
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(autoPlay);
   const [posterFailed, setPosterFailed] = useState(false);
   const video = parseVideoUrl(url);
+
+  // Autoplay only works muted without a user gesture; append the provider's
+  // mute flag to the embed src that already carries autoplay=1.
+  const embedSrc =
+    video && autoPlay
+      ? `${video.embedSrc}${video.provider === "youtube" ? "&mute=1" : "&muted=1"}`
+      : video?.embedSrc;
 
   const aspectClass =
     aspect === "portrait"
@@ -56,7 +66,7 @@ export function VideoEmbed({
       {playing && video ? (
         <iframe
           className="absolute inset-0 size-full"
-          src={video.embedSrc}
+          src={embedSrc}
           title={title}
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

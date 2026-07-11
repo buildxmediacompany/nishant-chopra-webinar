@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CalendarDays, Clock, Globe, Video, Play, Users } from "lucide-react";
+import { CalendarDays, Clock, Globe, Video, Play } from "lucide-react";
 import { Highlight } from "./highlight";
 import { CtaBanner } from "./cta-banner";
 import { Chip } from "./chip";
@@ -8,7 +8,7 @@ import { Reveal } from "./reveal";
 import { Waveform, SurLadder, DriftingNotes } from "./vocal-motifs";
 import { PointerSpotlight } from "./pointer-spotlight";
 import { VideoEmbed } from "./video-embed";
-import { TrustBadges } from "./trust-badges";
+import { AvatarStack } from "./avatar-stack";
 import { Tilt } from "@/components/ui/tilt";
 
 function LiveBadge() {
@@ -58,7 +58,7 @@ export function Hero({
   });
 
   return (
-    <section className="relative overflow-hidden px-4 pb-16 pt-14 sm:pt-20">
+    <section className="relative overflow-hidden px-4 pb-12 pt-9 sm:pt-16">
       {/* Faint marigold grid, fading out from the top — quiet architectural
           texture behind the hero (adapted from a 21st.dev grid background).
           Drifts one cell per cycle, so the stage never sits perfectly still. */}
@@ -102,14 +102,14 @@ export function Hero({
           </Reveal>
         )}
         <Reveal delay={80}>
-          <h1 className="mt-4 font-display text-[2.5rem] font-semibold leading-[1.08] text-cream sm:text-6xl">
+          <h1 className="mt-3 font-display text-[1.65rem] font-semibold leading-[1.15] text-cream sm:text-4xl lg:text-5xl">
             <Highlight text={heroHeadline} />
           </h1>
         </Reveal>
         {heroSubheadline && (
           <Reveal delay={160}>
-            <p className="mx-auto mt-5 max-w-xl font-body text-lg leading-relaxed text-cream-dim">
-              {heroSubheadline}
+            <p className="mx-auto mt-3 max-w-xl font-body text-base leading-relaxed text-cream-dim sm:text-lg">
+              <Highlight text={heroSubheadline} />
             </p>
           </Reveal>
         )}
@@ -119,15 +119,16 @@ export function Hero({
           desktop only, sits behind content so it never competes for attention. */}
       <SurLadder className="pointer-events-none absolute right-[6%] top-24 hidden h-40 w-32 opacity-40 [animation:float-y_7s_ease-in-out_infinite] lg:block" />
 
-      <div className="relative mx-auto mt-14 grid max-w-5xl items-center gap-10 lg:grid-cols-[minmax(0,400px)_1fr] lg:gap-14">
-        <Reveal delay={220} className="mx-auto w-full max-w-sm">
+      <div className="relative mx-auto mt-7 grid max-w-5xl items-center gap-6 lg:grid-cols-2 lg:gap-12">
+        <Reveal delay={220} className="mx-auto w-full max-w-xl">
           <Tilt rotationFactor={6} className="w-full">
             {heroVideoUrl ? (
               <VideoEmbed
                 url={heroVideoUrl}
                 title="Masterclass preview"
                 thumbnailUrl={heroVideoThumbnailUrl}
-                aspect="portrait"
+                aspect="video"
+                autoPlay
                 className="shadow-featured ring-1 ring-marigold/20"
                 overlayChildren={
                   <>
@@ -138,7 +139,7 @@ export function Hero({
               />
             ) : (
               /* No video configured yet — keep the poster + motif treatment. */
-              <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/20">
+              <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/20">
                 {heroVideoThumbnailUrl ? (
                   <Image
                     src={heroVideoThumbnailUrl}
@@ -167,7 +168,7 @@ export function Hero({
           </Tilt>
         </Reveal>
 
-        <Reveal delay={300} className="flex flex-col items-center gap-7 lg:items-start">
+        <Reveal delay={300} className="flex flex-col items-center gap-5 lg:items-start">
           <div className="flex flex-wrap justify-center gap-2.5 lg:justify-start">
             <Chip icon={CalendarDays}>{formattedDate}</Chip>
             <Chip icon={Clock}>{eventTime}</Chip>
@@ -182,26 +183,20 @@ export function Hero({
             className="mx-0"
           />
 
-          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 lg:justify-start">
+          {/* Social proof: a cluster of student faces + the star rating,
+              divided by a hairline. Centered on mobile, left-aligned on
+              desktop; wraps to two rows on narrow screens. */}
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 sm:gap-x-6 lg:justify-start">
+            <AvatarStack label={studentsTrainedLabel} />
+            <span
+              aria-hidden="true"
+              className="hidden h-9 w-px bg-stage-line sm:block"
+            />
             <span className="inline-flex items-center gap-2 text-sm text-cream-dim">
               <StarRating rating={Math.round(Number(ratingValue))} />
               <span className="font-medium text-cream">{ratingValue}/5</span>
             </span>
-            <span className="inline-flex items-center gap-2 text-sm text-cream-dim">
-              <Users className="size-4 text-marigold" />
-              {studentsTrainedLabel}
-            </span>
           </div>
-
-          {/* Credibility as medallions, not plain text — scannable at a glance. */}
-          <TrustBadges
-            className="justify-center lg:justify-start"
-            badges={[
-              { icon: "users", label: studentsTrainedLabel },
-              { icon: "star", label: `${ratingValue}/5 rating` },
-              { icon: "trophy", label: "Award winner" },
-            ]}
-          />
         </Reveal>
       </div>
     </section>

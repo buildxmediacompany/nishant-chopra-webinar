@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, BookMarked, Trophy } from "lucide-react";
 import { Section } from "./section";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
@@ -49,6 +49,28 @@ export function MentorBio({
             <p className="mt-1.5 font-utility text-sm uppercase tracking-[0.14em] text-marigold">
               {mentorTagline}
             </p>
+
+            {/* Headline credentials — set apart from the small badge pills so
+                they read as the marquee achievements, not just tags. */}
+            <ul className="mt-5 flex flex-col gap-2.5">
+              {[
+                { icon: BookMarked, label: "Genius Book of Records holder" },
+                { icon: Trophy, label: "Award Winning International Vocalist" },
+              ].map(({ icon: Icon, label }) => (
+                <li
+                  key={label}
+                  className="flex items-center justify-center gap-2.5 sm:justify-start"
+                >
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-marigold-dim ring-1 ring-marigold/25">
+                    <Icon className="size-4 text-marigold" />
+                  </span>
+                  <span className="font-body text-[15px] font-medium text-cream">
+                    {label}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
             {mentorBio && (
               <p className="mt-5 font-body leading-relaxed text-cream-dim">
                 {mentorBio}

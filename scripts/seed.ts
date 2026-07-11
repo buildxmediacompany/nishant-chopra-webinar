@@ -27,8 +27,9 @@ async function main() {
       "Register Now, Seats are Filling Fast only for First 100 People",
     countdownTargetAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3), // 3 days out
     heroHeadline:
-      "In {gold}3 Simple Steps{/gold} Master High Notes, Harkats & Sing Bollywood Songs Like a Pro {gold}In Just 2 Hours{/gold} {red}Live Masterclass!{/red}",
-    heroSubheadline: "From Basic to Advanced — No Classical Background Required",
+      "In {gold}3 Simple Steps{/gold} Master High Notes, Harkats & Sing Bollywood Songs Like a Pro",
+    heroSubheadline:
+      "From Basic to Advanced — {white}No Classical Background Required{/white}",
     heroVideoUrl: "",
     heroVideoThumbnailUrl: "https://placehold.co/640x800/1a0f0f/e8b545?text=Mentor+Intro+Video",
     eventDate: "2026-07-05",
@@ -38,7 +39,7 @@ async function main() {
     ratingValue: "4.9",
     ratingLabel: "Rating",
     studentsTrainedLabel: "10,000+ Students Trained",
-    seatsRegisteredLabel: "2,847 already registered",
+    seatsRegisteredLabel: "DO Masterclass",
     originalPricePaise: 479400,
     offerPricePaise: 9900,
     seatsLeftCount: 2,

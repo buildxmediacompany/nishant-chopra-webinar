@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Section } from "./section";
 import { SectionHeading } from "./section-heading";
-import { Stat } from "./stat";
 import { StarRating } from "./star-rating";
 import { Reveal } from "./reveal";
 import { Marquee } from "./marquee";
@@ -23,7 +22,13 @@ function Attribution({ t }: { t: Testimonial }) {
       {t.avatarUrl && (
         <div className="relative size-10 shrink-0 overflow-hidden rounded-full">
           {/* Admin-typed URL: an unlisted host must degrade, not 500 the page. */}
-          <Image src={t.avatarUrl} alt={t.name} fill unoptimized className="object-cover" />
+          <Image
+            src={t.avatarUrl}
+            alt={t.name}
+            fill
+            unoptimized
+            className="object-cover"
+          />
         </div>
       )}
       <div>
@@ -69,14 +74,15 @@ function QuoteBlock({ t }: { t: Testimonial }) {
   );
 }
 
-export function TestimonialGrid({ testimonials }: { testimonials: Testimonial[] }) {
+export function TestimonialGrid({
+  testimonials,
+}: {
+  testimonials: Testimonial[];
+}) {
   if (testimonials.length === 0) return null;
 
   const videoReviews = testimonials.filter((t) => t.videoUrl);
   const textReviews = testimonials.filter((t) => !t.videoUrl);
-
-  const avg = testimonials.reduce((s, t) => s + t.rating, 0) / testimonials.length;
-  const fiveStar = testimonials.filter((t) => t.rating >= 5).length;
 
   const [featured, ...restText] = textReviews;
   const marqueeSource = featured ? restText : [];
@@ -91,16 +97,6 @@ export function TestimonialGrid({ testimonials }: { testimonials: Testimonial[] 
         title="Hear From {gold}Our Students{/gold}"
       />
 
-      <Reveal className="mt-10">
-        <div className="mx-auto flex max-w-lg items-center justify-center gap-8 sm:gap-12">
-          <Stat value={avg.toFixed(1)} label="Avg rating" />
-          <span aria-hidden className="h-10 w-px bg-stage-line" />
-          <Stat value={testimonials.length} label="Student reviews" />
-          <span aria-hidden className="h-10 w-px bg-stage-line" />
-          <Stat value={fiveStar} label="5-star" />
-        </div>
-      </Reveal>
-
       {videoReviews.length > 0 && (
         <div className="mt-14 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {videoReviews.map((t, i) => (
@@ -113,8 +109,8 @@ export function TestimonialGrid({ testimonials }: { testimonials: Testimonial[] 
 
       {/* The pull-quote: set in the display face, unboxed. Typography is the
           emphasis — a card here would flatten it back into the grid. */}
-      {featured && (
-        <Reveal className="mt-16">
+      {/* {featured && (
+        <Reveal className={videoReviews.length > 0 ? "mt-16" : "mt-14"}>
           <figure className="mx-auto max-w-3xl text-center">
             <blockquote className="font-display text-2xl italic leading-relaxed text-cream sm:text-[2rem]">
               &ldquo;{featured.quote}&rdquo;
@@ -125,17 +121,17 @@ export function TestimonialGrid({ testimonials }: { testimonials: Testimonial[] 
             </figcaption>
           </figure>
         </Reveal>
-      )}
+      )} */}
 
       {marqueeSource.length > 0 && (
         <div className="mt-16 space-y-8 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
-          <Marquee durationSec={44}>
+          <Marquee durationSec={15}>
             {rowOne.map((t) => (
               <QuoteBlock key={t.id} t={t} />
             ))}
           </Marquee>
           {rowTwo.length > 0 && (
-            <Marquee durationSec={52} reverse>
+            <Marquee durationSec={15} reverse>
               {rowTwo.map((t) => (
                 <QuoteBlock key={t.id} t={t} />
               ))}

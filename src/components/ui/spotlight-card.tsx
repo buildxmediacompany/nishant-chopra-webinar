@@ -112,7 +112,9 @@ const GlowCard: React.FC<GlowCardProps> = ({
       backgroundOrigin: "border-box",
       border: "var(--border-size) solid var(--backup-border)",
       position: "relative",
-      touchAction: "none",
+      // pan-y lets vertical page scroll pass through on touch devices (mouse
+      // pointermove that drives the glow is unaffected by touch-action).
+      touchAction: "pan-y",
     };
 
     if (width !== undefined) {

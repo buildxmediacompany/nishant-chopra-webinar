@@ -10,7 +10,7 @@ import { Fragment } from "react";
  *   "In {gold}3 Simple Steps{/gold} Master High Notes {red}Live!{/red}"
  */
 export function Highlight({ text }: { text: string }) {
-  const pattern = /\{(gold|red)\}(.*?)\{\/\1\}/g;
+  const pattern = /\{(gold|red|white)\}(.*?)\{\/\1\}/g;
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -26,7 +26,13 @@ export function Highlight({ text }: { text: string }) {
     parts.push(
       <span
         key={key++}
-        className={tone === "gold" ? "text-marigold-soft" : "text-sindoor"}
+        className={
+          tone === "gold"
+            ? "text-marigold-soft"
+            : tone === "white"
+              ? "font-semibold text-cream"
+              : "text-sindoor"
+        }
       >
         {content}
       </span>
