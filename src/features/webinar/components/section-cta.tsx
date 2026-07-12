@@ -15,7 +15,7 @@ export function SectionCta({
   offerPricePaise: number;
 }) {
   return (
-    <div className="flex justify-center py-6">
+    <div className="flex justify-center py-4">
       <Button
         asChild
         variant="cta"

@@ -89,7 +89,7 @@ export default async function HomePage() {
       <AudienceGrid segments={audience} />
       <SectionCta {...ctaProps} />
 
-      <TestimonialGrid testimonials={testimonials} />
+      <TestimonialGrid />
       <SectionCta {...ctaProps} />
 
       {/* <ValueBand /> */}
