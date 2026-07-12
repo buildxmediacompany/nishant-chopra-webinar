@@ -27,17 +27,13 @@ export function MentorBio({
 
       <Reveal className="mt-12">
         <div className="grid grid-cols-1 items-center gap-8 sm:grid-cols-[240px_1fr] sm:gap-12">
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-[240px] overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/15">
+          <div className="mx-auto w-full max-w-[240px] overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/15">
             {mentorPhotoUrl && (
-              <Image
+              <img
                 src={mentorPhotoUrl}
                 alt={mentorName}
-                fill
                 loading="lazy"
-                // Admin-typed URL: an unlisted host must degrade, not 500 the page.
-                unoptimized
-                className="object-cover"
-                sizes="240px"
+                className="h-auto w-full object-contain"
               />
             )}
           </div>
