@@ -1,28 +1,26 @@
-import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-/** Five stars, `rating` of them filled marigold. Shared by hero + testimonials. */
+/**
+ * Renders the star.png asset (which already contains all 5 stars)
+ * alongside the rating value. Height-adjustable via className.
+ */
 export function StarRating({
   rating,
   className,
-  starClassName,
 }: {
   rating: number;
   className?: string;
-  starClassName?: string;
 }) {
   return (
-    <div className={cn("flex gap-0.5", className)} aria-label={`${rating} out of 5`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={cn(
-            "size-4",
-            i < rating ? "fill-marigold text-marigold" : "text-stage-line",
-            starClassName
-          )}
-        />
-      ))}
-    </div>
+    <span
+      className={cn("inline-flex items-center gap-2", className)}
+      aria-label={`${rating} out of 5 stars`}
+    >
+      <img
+        src="/assets/star.png"
+        alt="5 stars"
+        className="h-8 w-auto object-contain"
+      />
+    </span>
   );
 }

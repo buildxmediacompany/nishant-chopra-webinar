@@ -15,12 +15,12 @@ export function SectionCta({
   offerPricePaise: number;
 }) {
   return (
-    <div className="flex justify-center px-4 py-6">
+    <div className="flex justify-center py-6">
       <Button
         asChild
         variant="cta"
         size="lg"
-        className="transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)]"
+        className="animate-[cta-wobble_3s_ease-in-out_2s_infinite] transition-[transform,box-shadow] duration-200 hover:animate-none hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)]"
       >
         <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
           Register Now — {formatPaise(offerPricePaise)}/- Only

@@ -63,8 +63,6 @@ export default async function HomePage() {
       /> */}
 
       <Hero
-        heroHeadline={webinar.heroHeadline}
-        heroSubheadline={webinar.heroSubheadline}
         heroVideoUrl={webinar.heroVideoUrl}
         heroVideoThumbnailUrl={webinar.heroVideoThumbnailUrl}
         eventDate={webinar.eventDate}

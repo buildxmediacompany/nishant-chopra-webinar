@@ -37,7 +37,8 @@ export function AvatarStack({
   const rest = match ? match[2] : label;
 
   return (
-    <div className={cn("flex items-center gap-3", className)}>
+    <div className={cn("flex flex-col items-start gap-1.5", className)}>
+      {/* Avatar discs */}
       <div className="flex items-center">
         {Array.from({ length: count }).map((_, i) => (
           <span
@@ -62,13 +63,14 @@ export function AvatarStack({
         </span>
       </div>
 
-      <p className="leading-tight">
+      {/* Single-line label: "10,000+ Students Trained" */}
+      <p className="whitespace-nowrap text-sm leading-none">
         {lead && (
-          <span className="block font-display text-lg font-bold text-marigold-soft">
-            {lead}
+          <span className="font-display font-bold text-marigold-soft">
+            {lead}{" "}
           </span>
         )}
-        <span className="block font-utility text-xs font-medium uppercase tracking-wide text-cream-dim">
+        <span className="font-utility text-xs font-medium uppercase tracking-wide text-cream-dim">
           {rest}
         </span>
       </p>

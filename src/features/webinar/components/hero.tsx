@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { CalendarDays, Clock, Globe, Video, Play } from "lucide-react";
-import { Highlight } from "./highlight";
 import { CtaBanner } from "./cta-banner";
 import { Chip } from "./chip";
 import { StarRating } from "./star-rating";
@@ -13,7 +12,7 @@ import { Tilt } from "@/components/ui/tilt";
 
 function LiveBadge() {
   return (
-    <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-sindoor px-3 py-1 font-utility text-xs font-semibold uppercase tracking-wide text-cream shadow-soft">
+    <span className="absolute left-4 top-4 z-10 inline-flex animate-pulse items-center gap-1.5 rounded-full bg-sindoor px-3 py-1 font-utility text-xs font-bold uppercase tracking-widest text-cream shadow-[0_0_14px_4px_rgba(194,59,51,0.55)]">
       <span className="size-1.5 rounded-full bg-cream" />
       Live Masterclass
     </span>
@@ -21,8 +20,6 @@ function LiveBadge() {
 }
 
 export function Hero({
-  heroHeadline,
-  heroSubheadline,
   heroVideoUrl,
   heroVideoThumbnailUrl,
   eventDate,
@@ -36,8 +33,6 @@ export function Hero({
   offerPricePaise,
   seatsLeftText,
 }: {
-  heroHeadline: string;
-  heroSubheadline: string | null;
   heroVideoUrl: string | null;
   heroVideoThumbnailUrl: string | null;
   eventDate: string;
@@ -58,7 +53,7 @@ export function Hero({
   });
 
   return (
-    <section className="relative overflow-hidden px-4 pb-12 pt-9 sm:pt-16">
+    <section className="relative overflow-hidden px-4 pb-12 pt-14 sm:pt-16">
       {/* Faint marigold grid, fading out from the top — quiet architectural
           texture behind the hero (adapted from a 21st.dev grid background).
           Drifts one cell per cycle, so the stage never sits perfectly still. */}
@@ -96,31 +91,39 @@ export function Hero({
       <div className="relative mx-auto max-w-3xl text-center">
         {seatsRegisteredLabel && (
           <Reveal>
-            <p className="font-utility text-sm font-semibold uppercase tracking-[0.22em] text-marigold">
+            <p className="inline-flex items-center gap-2 font-utility text-sm font-bold uppercase tracking-[0.22em] text-sindoor drop-shadow-[0_0_8px_rgba(194,59,51,0.6)]">
+              <span className="animate-[blink_1s_step-start_infinite] size-2 rounded-full bg-sindoor shadow-[0_0_8px_2px_rgba(194,59,51,0.7)]" />
               {seatsRegisteredLabel}
             </p>
           </Reveal>
         )}
         <Reveal delay={80}>
-          <h1 className="mt-3 font-display text-[1.65rem] font-semibold leading-[1.15] text-cream sm:text-4xl lg:text-5xl">
-            <Highlight text={heroHeadline} />
+          <h1 className="mt-5 font-display text-[2.1rem] font-bold leading-[1.12] tracking-tight text-cream sm:text-5xl lg:text-6xl">
+            In{" "}
+            <span className="text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]">3 Simple Steps</span>{" "}
+            Master{" "}
+            <span className="text-marigold-soft">High Notes, Harkats</span>{" "}
+            &amp; Sing{" "}
+            <span className="text-marigold-soft">Bollywood Songs</span>{" "}
+            Like a Pro
           </h1>
         </Reveal>
-        {heroSubheadline && (
-          <Reveal delay={160}>
-            <p className="mx-auto mt-3 max-w-xl font-body text-base leading-relaxed text-cream-dim sm:text-lg">
-              <Highlight text={heroSubheadline} />
-            </p>
-          </Reveal>
-        )}
+        <Reveal delay={160}>
+          <p className="mx-auto mt-5 max-w-xl font-body text-lg leading-relaxed text-cream-dim sm:text-xl">
+            From Basic to Advanced —{" "}
+            <span className="font-semibold text-cream">
+              No Classical Background Required
+            </span>
+          </p>
+        </Reveal>
       </div>
 
       {/* Sur ladder — rising Sa-Re-Ga-Ma-Pa. Subject-grounded ambient graphic,
           desktop only, sits behind content so it never competes for attention. */}
       <SurLadder className="pointer-events-none absolute right-[6%] top-24 hidden h-40 w-32 opacity-40 [animation:float-y_7s_ease-in-out_infinite] lg:block" />
 
-      <div className="relative mx-auto mt-7 grid max-w-5xl items-center gap-6 lg:grid-cols-2 lg:gap-12">
-        <Reveal delay={220} className="mx-auto w-full max-w-xl">
+      <div className="relative mx-auto mt-12 grid max-w-5xl items-center gap-6 lg:grid-cols-2 lg:gap-12">
+        <Reveal delay={220} className="mx-auto flex w-full max-w-xl flex-col gap-4">
           <Tilt rotationFactor={6} className="w-full">
             {heroVideoUrl ? (
               <VideoEmbed
@@ -166,36 +169,49 @@ export function Hero({
               </div>
             )}
           </Tilt>
-        </Reveal>
 
-        <Reveal delay={300} className="flex flex-col items-center gap-5 lg:items-start">
-          <div className="flex flex-wrap justify-center gap-2.5 lg:justify-start">
+          {/* Chips below video */}
+          <div className="grid w-full grid-cols-2 gap-2.5">
             <Chip icon={CalendarDays}>{formattedDate}</Chip>
             <Chip icon={Clock}>{eventTime}</Chip>
             <Chip icon={Globe}>{language}</Chip>
             <Chip icon={Video}>{mode}</Chip>
           </div>
+        </Reveal>
 
+        <Reveal delay={300} className="flex flex-col items-center gap-8 lg:w-full lg:items-start lg:gap-7">
           <CtaBanner
             registrationUrl={registrationUrl}
             offerPricePaise={offerPricePaise}
             seatsLeftText={seatsLeftText}
-            className="mx-0"
+            className="mx-0 max-w-none"
           />
 
-          {/* Social proof: a cluster of student faces + the star rating,
-              divided by a hairline. Centered on mobile, left-aligned on
-              desktop; wraps to two rows on narrow screens. */}
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3 sm:gap-x-6 lg:justify-start">
-            <AvatarStack label={studentsTrainedLabel} />
+          {/* Social proof — pill card on desktop, stacked on mobile */}
+          <div className="flex w-full flex-col items-center gap-3 sm:flex-row sm:items-stretch sm:gap-0 sm:overflow-hidden sm:rounded-2xl sm:border sm:border-stage-line sm:bg-stage-raised/60">
+            {/* Left — avatar stack + student count */}
+            <div className="flex flex-1 items-center sm:px-5 sm:py-4">
+              <AvatarStack label={studentsTrainedLabel} />
+            </div>
+
+            {/* Desktop divider */}
             <span
               aria-hidden="true"
-              className="hidden h-9 w-px bg-stage-line sm:block"
+              className="hidden w-px shrink-0 self-stretch bg-stage-line sm:block"
             />
-            <span className="inline-flex items-center gap-2 text-sm text-cream-dim">
+
+            {/* Right — stars + rating value */}
+            <div className="flex items-center justify-center gap-3 sm:px-5 sm:py-4">
               <StarRating rating={Math.round(Number(ratingValue))} />
-              <span className="font-medium text-cream">{ratingValue}/5</span>
-            </span>
+              <div className="flex flex-col leading-tight">
+                <span className="font-display text-base font-bold text-cream">
+                  {ratingValue}<span className="text-xs text-cream-dim">/5</span>
+                </span>
+                <span className="font-utility text-[10px] uppercase tracking-wide text-cream-dim">
+                  Rating
+                </span>
+              </div>
+            </div>
           </div>
         </Reveal>
       </div>

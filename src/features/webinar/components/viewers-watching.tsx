@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
  * in the effect.
  */
 export function ViewersWatching({
-  base = 350,
+  base = 87,
   className,
 }: {
   base?: number;
@@ -22,12 +22,14 @@ export function ViewersWatching({
   useEffect(() => {
     const iv = setInterval(() => {
       setN((c) => {
-        const next = c + (Math.floor(Math.random() * 7) - 3); // -3..+3
-        return Math.min(base + 10, Math.max(base - 8, next));
+        const next = c + (Math.floor(Math.random() * 5) - 2); // -2..+2
+        return Math.min(102, Math.max(base - 8, next));
       });
     }, 2800);
     return () => clearInterval(iv);
   }, [base]);
+
+  const label = n > 100 ? "100+" : String(n);
 
   return (
     <span
@@ -41,7 +43,7 @@ export function ViewersWatching({
         <span className="relative inline-flex size-2 rounded-full bg-[#34d399]" />
       </span>
       <Eye className="size-3.5 text-marigold" />
-      <span className="font-semibold text-cream">{n}</span> watching now
+      <span className="font-semibold text-cream">{label}</span> watching now
     </span>
   );
 }

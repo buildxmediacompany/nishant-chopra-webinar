@@ -39,7 +39,7 @@ async function main() {
     ratingValue: "4.9",
     ratingLabel: "Rating",
     studentsTrainedLabel: "10,000+ Students Trained",
-    seatsRegisteredLabel: "DO Masterclass",
+    seatsRegisteredLabel: "Live Masterclass",
     originalPricePaise: 479400,
     offerPricePaise: 9900,
     seatsLeftCount: 2,

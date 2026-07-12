@@ -59,7 +59,7 @@ export const webinars = pgTable("webinars", {
     .notNull()
     .default("10,000+ Students Trained"),
   seatsRegisteredLabel: text("seats_registered_label").default(
-    "DO Masterclass"
+    "Live Masterclass"
   ),
 
   // Pricing & scarcity

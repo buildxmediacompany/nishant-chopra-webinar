@@ -21,7 +21,7 @@ export function CtaBanner({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto flex w-full max-w-md flex-col items-center gap-3.5", className)}>
+    <div className={cn("mx-auto flex w-full max-w-md flex-col items-center gap-4", className)}>
       <Button
         asChild
         variant="cta"
@@ -33,26 +33,33 @@ export function CtaBanner({
         </a>
       </Button>
 
-      {seatsLeftText && <SeatsLeftTicker text={seatsLeftText} />}
+      {seatsLeftText && (
+        <SeatsLeftTicker
+          text={seatsLeftText}
+          variant="banner"
+          className="hidden sm:flex"
+        />
+      )}
 
-      <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-cream-dim">
-        <span className="inline-flex items-center gap-1.5">
-          <Lock className="size-3.5 text-marigold" /> 100% Secure Payment
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <ShieldCheck className="size-3.5 text-marigold" /> Instant Confirmation
-        </span>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-        {["UPI", "Visa", "Mastercard", "RuPay"].map((m) => (
-          <span
-            key={m}
-            className="font-utility text-xs uppercase tracking-wide text-cream-faint"
-          >
-            {m}
+      {/* Trust signals + payment — always stacked */}
+      <div className="flex w-full flex-col items-center gap-3">
+        {/* Trust badges */}
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-cream-dim">
+          <span className="inline-flex items-center gap-1.5">
+            <Lock className="size-3.5 shrink-0 text-marigold" /> 100% Secure Payment
           </span>
-        ))}
+          <span className="inline-flex items-center gap-1.5">
+            <ShieldCheck className="size-3.5 shrink-0 text-marigold" /> Instant Confirmation
+          </span>
+        </div>
+
+        {/* Payment image */}
+        <img
+          src="/assets/payment.png"
+          alt="Accepted payment methods: UPI, Visa, Mastercard, RuPay"
+          className="h-7 w-auto max-w-full object-contain"
+          loading="lazy"
+        />
       </div>
     </div>
   );
