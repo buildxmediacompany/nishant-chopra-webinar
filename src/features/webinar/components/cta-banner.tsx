@@ -26,7 +26,7 @@ export function CtaBanner({
         asChild
         variant="cta"
         size="lg"
-        className="h-11 w-full text-sm transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)] sm:h-12 sm:text-base"
+        className="h-11 w-full animate-[cta-wobble_3s_ease-in-out_2s_infinite] text-sm transition-[transform,background-color,box-shadow] duration-200 hover:animate-none hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)] sm:h-12 sm:text-base"
       >
         <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
           Register Now — {formatPaise(offerPricePaise)}/- Only
