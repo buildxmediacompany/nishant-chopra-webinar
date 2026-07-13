@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 
 /** Seats shown on first paint, before the slow countdown begins. */
 const START_SEATS = 7;
+/** Counter never drops below this — always shows an urgency number, never 0. */
+const FLOOR_SEATS = 2;
 /** ~65% of seats drop every 30 s (fast urgency burst). */
 const FAST_TICK_MS = 30 * 1000;
 /** Remaining ~35% drop every 90 s (steady slow drip). */
@@ -33,34 +35,70 @@ export function SeatsLeftTicker({
   variant?: "default" | "compact" | "banner";
 }) {
   const match = text.match(/\d+/);
-  const finalN = match ? parseInt(match[0], 10) : null;
+  const rawFinalN = match ? parseInt(match[0], 10) : null;
+  // Never let the counter reach 0 — clamp to FLOOR_SEATS for urgency.
+  const finalN = rawFinalN != null ? Math.max(rawFinalN, FLOOR_SEATS) : null;
   const start = finalN != null ? Math.max(finalN, START_SEATS) : null;
 
   const [n, setN] = useState(start ?? 0);
 
   useEffect(() => {
     if (finalN == null || start == null) return;
-    let cur = start;
-    setN(cur);
 
-    // Number of seats that tick fast (top ~65% of the range)
     const range = start - finalN;
     const fastCount = Math.round(range * FAST_RATIO);
-    // Once cur drops below this threshold, switch to slow ticks
     const slowThreshold = start - fastCount;
+    const fastPhaseDuration = fastCount * FAST_TICK_MS;
+
+    const computeCurrent = (startedAt: number): number => {
+      const elapsed = Date.now() - startedAt;
+      let dropped: number;
+      if (elapsed <= fastPhaseDuration) {
+        dropped = Math.floor(elapsed / FAST_TICK_MS);
+      } else {
+        dropped = fastCount + Math.floor((elapsed - fastPhaseDuration) / SLOW_TICK_MS);
+      }
+      return Math.max(finalN, start - dropped);
+    };
+
+    // Persist start time so refreshes resume from the right number.
+    const STORAGE_KEY = `seats_ticker_${finalN}`;
+    let startedAt: number;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      startedAt = parseInt(stored, 10);
+    } else {
+      startedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, String(startedAt));
+    }
+
+    let cur = computeCurrent(startedAt);
+    setN(cur);
 
     let timerId: ReturnType<typeof setTimeout>;
 
     const tick = () => {
       cur -= 1;
       setN(cur);
-      if (cur <= finalN) return; // reached target — stop
+      if (cur <= finalN) return;
       const delay = cur > slowThreshold ? FAST_TICK_MS : SLOW_TICK_MS;
       timerId = setTimeout(tick, delay);
     };
 
-    // First tick always starts in fast phase
-    timerId = setTimeout(tick, FAST_TICK_MS);
+    if (cur > finalN) {
+      const elapsed = Date.now() - startedAt;
+      let nextTickAt: number;
+      if (elapsed < fastPhaseDuration) {
+        const ticksDone = Math.floor(elapsed / FAST_TICK_MS);
+        nextTickAt = startedAt + (ticksDone + 1) * FAST_TICK_MS;
+      } else {
+        const slowElapsed = elapsed - fastPhaseDuration;
+        const slowDone = Math.floor(slowElapsed / SLOW_TICK_MS);
+        nextTickAt = startedAt + fastPhaseDuration + (slowDone + 1) * SLOW_TICK_MS;
+      }
+      timerId = setTimeout(tick, Math.max(0, nextTickAt - Date.now()));
+    }
+
     return () => clearTimeout(timerId);
   }, [finalN, start]);
 
