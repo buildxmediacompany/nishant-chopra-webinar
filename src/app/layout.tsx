@@ -42,7 +42,7 @@ export default function RootLayout({
     >
       <head>
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {children}
         {/* Meta Pixel */}
         <Script id="meta-pixel" strategy="afterInteractive">
