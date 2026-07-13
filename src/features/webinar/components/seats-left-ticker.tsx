@@ -5,8 +5,12 @@ import { cn } from "@/lib/utils";
 
 /** Seats shown on first paint, before the slow countdown begins. */
 const START_SEATS = 7;
-/** One seat "sells" every 30 seconds until the real (admin) count is reached. */
-const TICK_MS = 30 * 1000;
+/** ~65% of seats drop every 30 s (fast urgency burst). */
+const FAST_TICK_MS = 30 * 1000;
+/** Remaining ~35% drop every 90 s (steady slow drip). */
+const SLOW_TICK_MS = 90 * 1000;
+/** Fraction of the countdown range that uses the fast interval. */
+const FAST_RATIO = 0.65;
 
 /**
  * Renders the admin's seats-left copy with a simulated live tick: the first
@@ -38,12 +42,26 @@ export function SeatsLeftTicker({
     if (finalN == null || start == null) return;
     let cur = start;
     setN(cur);
-    const iv = setInterval(() => {
+
+    // Number of seats that tick fast (top ~65% of the range)
+    const range = start - finalN;
+    const fastCount = Math.round(range * FAST_RATIO);
+    // Once cur drops below this threshold, switch to slow ticks
+    const slowThreshold = start - fastCount;
+
+    let timerId: ReturnType<typeof setTimeout>;
+
+    const tick = () => {
       cur -= 1;
       setN(cur);
-      if (cur <= finalN) clearInterval(iv);
-    }, TICK_MS);
-    return () => clearInterval(iv);
+      if (cur <= finalN) return; // reached target — stop
+      const delay = cur > slowThreshold ? FAST_TICK_MS : SLOW_TICK_MS;
+      timerId = setTimeout(tick, delay);
+    };
+
+    // First tick always starts in fast phase
+    timerId = setTimeout(tick, FAST_TICK_MS);
+    return () => clearTimeout(timerId);
   }, [finalN, start]);
 
   /** Live dot (no blink — parent wrapper handles it) */
