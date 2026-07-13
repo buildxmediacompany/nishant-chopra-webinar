@@ -300,18 +300,15 @@ body {
   50%       { opacity: 0; }
 }
 
-/* CTA button wobble — a quick left-right shake every 3 s to draw the eye.
-   The button sits still for the first ~2 s (via animation-delay on use),
-   then rattles once. Stops immediately on hover so it never fights the user. */
+/* CTA button wobble — a constant left-right rock that runs nonstop to
+   keep the eye on the register buttons. No dead time, no delay.
+   Stops immediately on hover so it never fights the user. */
 @keyframes cta-wobble {
-  0%,  60%, 100% { transform: translateX(0) rotate(0deg); }
-  65%            { transform: translateX(-5px) rotate(-1.5deg); }
-  70%            { transform: translateX(5px) rotate(1.5deg); }
-  75%            { transform: translateX(-4px) rotate(-1deg); }
-  80%            { transform: translateX(4px) rotate(1deg); }
-  85%            { transform: translateX(-2px) rotate(-0.5deg); }
-  90%            { transform: translateX(2px) rotate(0.5deg); }
-  95%            { transform: translateX(-1px); }
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20%      { transform: translateX(-4px) rotate(-1.5deg); }
+  40%      { transform: translateX(4px) rotate(1.5deg); }
+  60%      { transform: translateX(-3px) rotate(-1deg); }
+  80%      { transform: translateX(3px) rotate(1deg); }
 }
 
 /* Visible keyboard focus (quality floor) */

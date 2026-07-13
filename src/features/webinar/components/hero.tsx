@@ -28,7 +28,6 @@ export function Hero({
   mode,
   ratingValue,
   studentsTrainedLabel,
-  seatsRegisteredLabel,
   registrationUrl,
   offerPricePaise,
   seatsLeftText,
@@ -46,11 +45,16 @@ export function Hero({
   offerPricePaise: number;
   seatsLeftText: string | null;
 }) {
-  const formattedDate = new Date(eventDate + "T00:00:00").toLocaleDateString("en-IN", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const formattedDate = new Date(eventDate + "T00:00:00").toLocaleDateString(
+    "en-IN",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    },
+  );
+
+  const seatsRegisteredLabel = "Live MAsterclass";
 
   return (
     <section className="relative overflow-hidden px-4 pb-12 pt-14 sm:pt-16">
@@ -100,12 +104,14 @@ export function Hero({
         <Reveal delay={80}>
           <h1 className="mt-5 font-display text-[2.1rem] font-bold leading-[1.12] tracking-tight text-cream sm:text-5xl lg:text-6xl">
             In{" "}
-            <span className="text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]">3 Simple Steps</span>{" "}
+            <span className="text-emerald-400 drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]">
+              3 Simple Steps
+            </span>{" "}
             Master{" "}
             <span className="text-marigold-soft">High Notes, Harkats</span>{" "}
             &amp; Sing{" "}
-            <span className="text-marigold-soft">Bollywood Songs</span>{" "}
-            Like a Pro
+            <span className="text-marigold-soft">Bollywood Songs</span> Like a
+            Pro
           </h1>
         </Reveal>
         <Reveal delay={160}>
@@ -123,7 +129,10 @@ export function Hero({
       <SurLadder className="pointer-events-none absolute right-[6%] top-24 hidden h-40 w-32 opacity-40 [animation:float-y_7s_ease-in-out_infinite] lg:block" />
 
       <div className="relative mx-auto mt-12 grid max-w-5xl items-center gap-6 lg:grid-cols-2 lg:gap-12">
-        <Reveal delay={220} className="mx-auto flex w-full max-w-xl flex-col gap-4">
+        <Reveal
+          delay={220}
+          className="mx-auto flex w-full max-w-xl flex-col gap-4"
+        >
           <Tilt rotationFactor={6} className="w-full">
             {heroVideoUrl ? (
               <VideoEmbed
@@ -135,8 +144,11 @@ export function Hero({
                 className="shadow-featured ring-1 ring-marigold/20"
                 overlayChildren={
                   <>
-                    <LiveBadge />
-                    <Waveform bars={28} className="absolute inset-x-4 bottom-4 h-8" />
+                    {/* <LiveBadge /> */}
+                    <Waveform
+                      bars={28}
+                      className="absolute inset-x-4 bottom-4 h-8"
+                    />
                   </>
                 }
               />
@@ -165,7 +177,10 @@ export function Hero({
                   </div>
                 </div>
                 <LiveBadge />
-                <Waveform bars={28} className="absolute inset-x-4 bottom-4 h-8" />
+                <Waveform
+                  bars={28}
+                  className="absolute inset-x-4 bottom-4 h-8"
+                />
               </div>
             )}
           </Tilt>
@@ -179,7 +194,10 @@ export function Hero({
           </div>
         </Reveal>
 
-        <Reveal delay={300} className="flex flex-col items-center gap-8 lg:w-full lg:items-start lg:gap-7">
+        <Reveal
+          delay={300}
+          className="flex flex-col items-center gap-8 lg:w-full lg:items-start lg:gap-7"
+        >
           <CtaBanner
             registrationUrl={registrationUrl}
             offerPricePaise={offerPricePaise}
@@ -205,7 +223,8 @@ export function Hero({
               <StarRating rating={Math.round(Number(ratingValue))} />
               <div className="flex flex-col leading-tight">
                 <span className="font-display text-base font-bold text-cream">
-                  {ratingValue}<span className="text-xs text-cream-dim">/5</span>
+                  {ratingValue}
+                  <span className="text-xs text-cream-dim">/5</span>
                 </span>
                 <span className="font-utility text-[10px] uppercase tracking-wide text-cream-dim">
                   Rating

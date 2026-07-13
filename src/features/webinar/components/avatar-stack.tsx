@@ -6,12 +6,12 @@ import { cn } from "@/lib/utils";
  */
 
 const STUDENT_PHOTOS = [
-  "/assets/1.png",
-  "/assets/2.png",
-  "/assets/3.png",
-  "/assets/4.png",
-  "/assets/5.png",
-  "/assets/6.png",
+  "/assets/7.png",
+  "/assets/8.png",
+  "/assets/9.png",
+  "/assets/10.png",
+  "/assets/11.png",
+  "/assets/12.png",
 ];
 
 export function AvatarStack({
@@ -30,7 +30,10 @@ export function AvatarStack({
   const lead = match ? match[1] : null;
   const rest = match ? match[2] : label;
 
-  const photos = STUDENT_PHOTOS.slice(0, Math.min(count, STUDENT_PHOTOS.length));
+  const photos = STUDENT_PHOTOS.slice(
+    0,
+    Math.min(count, STUDENT_PHOTOS.length),
+  );
 
   return (
     <div className={cn("flex flex-col items-start gap-1.5", className)}>
@@ -41,16 +44,12 @@ export function AvatarStack({
             key={src}
             className={cn(
               "relative size-9 shrink-0 overflow-hidden rounded-full ring-2 ring-stage",
-              i > 0 && "-ml-2.5"
+              i > 0 && "-ml-2.5",
             )}
             style={{ zIndex: photos.length - i }}
             aria-hidden="true"
           >
-            <img
-              src={src}
-              alt=""
-              className="size-full object-cover"
-            />
+            <img src={src} alt="" className="size-full object-cover" />
           </div>
         ))}
         {/* Tail "+" bubble */}

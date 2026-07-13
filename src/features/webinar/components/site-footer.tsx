@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
  * inline SVG below. Swap these placeholder URLs for the real handles.
  */
 const SOCIALS = [
-  { label: "Instagram", href: "https://instagram.com/", Icon: InstagramIcon },
-  { label: "YouTube", href: "https://youtube.com/", Icon: YoutubeIcon },
-  { label: "WhatsApp", href: "https://wa.me/", Icon: WhatsappIcon },
-  { label: "Facebook", href: "https://facebook.com/", Icon: FacebookIcon },
+  { label: "Instagram", href: "https://www.instagram.com/nishantmusic19297", Icon: InstagramIcon },
+  { label: "YouTube", href: "https://youtube.com/@nishantchopra19297", Icon: YoutubeIcon },
+  { label: "WhatsApp", href: "https://wa.me/qr/CJ4YUVTNNF6TO1", Icon: WhatsappIcon },
+  { label: "Facebook", href: "https://www.facebook.com/share/1BYi8CRNmA/", Icon: FacebookIcon },
 ] as const;
 
 export function SiteFooter({
