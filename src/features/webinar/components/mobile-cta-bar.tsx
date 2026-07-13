@@ -1,7 +1,10 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { formatPaise } from "@/lib/utils";
 import { RegistrationToast } from "./registration-toast";
 import { SeatsLeftTicker } from "./seats-left-ticker";
+import { trackRegisterClick } from "@/lib/meta-pixel";
 
 /**
  * Fixed bottom register bar, mobile only. Keeps the primary action always in
@@ -57,7 +60,7 @@ export function MobileCtaBar({
           size="sm"
           className="h-11 w-full animate-[cta-wobble_1.2s_ease-in-out_infinite] text-sm font-semibold hover:animate-none"
         >
-          <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
+          <a href={registrationUrl} target="_blank" rel="noopener noreferrer" onClick={trackRegisterClick}>
             Register Now — {formatPaise(offerPricePaise)}/- Only
           </a>
         </Button>

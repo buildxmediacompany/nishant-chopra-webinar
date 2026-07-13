@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { formatPaise } from "@/lib/utils";
+import { trackRegisterClick } from "@/lib/meta-pixel";
 
 /**
  * A compact, repeatable "Register Now" nudge dropped between sections so the
@@ -22,7 +25,7 @@ export function SectionCta({
         size="lg"
         className="animate-[cta-wobble_1.2s_ease-in-out_infinite] transition-[transform,box-shadow] duration-200 hover:animate-none hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)]"
       >
-        <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
+        <a href={registrationUrl} target="_blank" rel="noopener noreferrer" onClick={trackRegisterClick}>
           Register Now — {formatPaise(offerPricePaise)}/- Only
         </a>
       </Button>

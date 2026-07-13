@@ -1,7 +1,10 @@
+"use client";
+
 import type { SVGProps } from "react";
 import { Mail, Phone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { trackRegisterClick } from "@/lib/meta-pixel";
 
 /**
  * Social profiles. lucide-react (v1) ships no brand glyphs, so the icons are
@@ -57,7 +60,7 @@ export function SiteFooter({
               size="lg"
               className="shrink-0 transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-12px_rgba(194,59,51,0.7)]"
             >
-              <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
+              <a href={registrationUrl} target="_blank" rel="noopener noreferrer" onClick={trackRegisterClick}>
                 Register Now
               </a>
             </Button>

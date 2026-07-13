@@ -1,5 +1,8 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { formatPaise } from "@/lib/utils";
+import { trackRegisterClick } from "@/lib/meta-pixel";
 
 export function AnnouncementBar({
   text,
@@ -27,7 +30,7 @@ export function AnnouncementBar({
             variant="cta"
             className="hidden transition-transform duration-200 hover:-translate-y-0.5 sm:inline-flex"
           >
-            <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
+            <a href={registrationUrl} target="_blank" rel="noopener noreferrer" onClick={trackRegisterClick}>
               Register {formatPaise(offerPricePaise)}/-
             </a>
           </Button>
