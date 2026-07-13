@@ -1,7 +1,8 @@
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 /**
- * Social proof cluster of real student faces from /assets/1.webp – 6.png.
+ * Social proof cluster of real student faces from /assets/7.webp – 12.webp.
  * Shows the first `count` photos stacked with overlap, plus a "+" bubble.
  */
 
@@ -49,7 +50,7 @@ export function AvatarStack({
             style={{ zIndex: photos.length - i }}
             aria-hidden="true"
           >
-            <img src={src} alt="" className="size-full object-cover" />
+            <Image src={src} alt="" fill sizes="36px" className="object-cover" />
           </div>
         ))}
         {/* Tail "+" bubble */}

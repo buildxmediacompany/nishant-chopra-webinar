@@ -27,13 +27,15 @@ export function MentorBio({
 
       <Reveal className="mt-12">
         <div className="grid grid-cols-1 items-center gap-8 sm:grid-cols-[240px_1fr] sm:gap-12">
-          <div className="mx-auto w-full max-w-[240px] overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/15">
+          <div className="relative mx-auto w-full max-w-[240px] overflow-hidden rounded-2xl bg-stage-raised shadow-featured ring-1 ring-marigold/15">
             {mentorPhotoUrl && (
-              <img
+              <Image
                 src={mentorPhotoUrl}
                 alt={mentorName}
-                loading="lazy"
-                className="h-auto w-full object-contain"
+                width={240}
+                height={300}
+                sizes="240px"
+                className="h-auto w-full object-cover"
               />
             )}
           </div>

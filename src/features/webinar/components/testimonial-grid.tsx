@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Section } from "./section";
 import { SectionHeading } from "./section-heading";
 import { StarRating } from "./star-rating";
@@ -9,10 +10,12 @@ function Attribution({ t }: { t: (typeof TESTIMONIALS)[number] }) {
   return (
     <div className="flex items-center gap-3">
       <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-2 ring-marigold/30">
-        <img
+        <Image
           src={t.avatar}
           alt={t.name}
-          className="size-full object-cover"
+          fill
+          sizes="40px"
+          className="object-cover"
         />
       </div>
       <div>

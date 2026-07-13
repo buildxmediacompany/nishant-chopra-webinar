@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Section } from "./section";
 import { SectionHeading } from "./section-heading";
 import { Reveal } from "./reveal";
@@ -17,7 +18,7 @@ function DmCard({ t, delay }: { t: (typeof TESTIMONIALS)[number]; delay: number 
         {/* WhatsApp-style header bar */}
         <div className="flex items-center gap-3 border-b border-white/5 bg-[#0e1420] px-4 py-3">
           <div className="relative size-9 shrink-0 overflow-hidden rounded-full ring-2 ring-marigold/30">
-            <img src={t.avatar} alt={t.name} className="size-full object-cover" />
+            <Image src={t.avatar} alt={t.name} fill sizes="36px" className="object-cover" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="truncate font-body text-sm font-semibold text-cream">{t.name}</p>
