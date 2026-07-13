@@ -40,9 +40,11 @@
   --color-cream-faint: rgba(243, 233, 221, 0.4);
   --color-ink: #241417;
 
-  --font-display: "Fraunces", "Georgia", serif;
-  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
-  --font-utility: "Barlow Condensed", "Arial Narrow", sans-serif;
+  /* next/font injects --font-fraunces / --font-inter / --font-barlow onto <html>.
+     Map them to the design-token names used throughout the app. */
+  --font-display: var(--font-fraunces), "Georgia", serif;
+  --font-body: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+  --font-utility: var(--font-barlow), "Arial Narrow", sans-serif;
 }
 
 @theme inline {

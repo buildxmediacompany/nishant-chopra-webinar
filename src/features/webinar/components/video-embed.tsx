@@ -86,7 +86,6 @@ export function VideoEmbed({
               src={poster}
               alt=""
               fill
-              unoptimized
               onError={() => setPosterFailed(true)}
               className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
               sizes="(min-width: 1024px) 400px, 90vw"

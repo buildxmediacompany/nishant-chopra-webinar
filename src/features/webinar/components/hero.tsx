@@ -89,7 +89,10 @@ export function Hero({
       />
       {/* Notes rising through the backdrop + a glow tracking the cursor —
           the same ambient pairing as the "Why this workshop" section. */}
-      <DriftingNotes direction="scatter" />
+      {/* Notes hidden on mobile — saves GPU on low-end phones */}
+      <div className="hidden sm:block">
+        <DriftingNotes direction="scatter" />
+      </div>
       <PointerSpotlight size={420} />
 
       <div className="relative mx-auto max-w-3xl text-center">
