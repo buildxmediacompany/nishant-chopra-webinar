@@ -61,7 +61,7 @@ export function ScreenshotGrid({
         title="What Students Are {gold}Saying{/gold}"
       />
       <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {TESTIMONIALS.map((t, i) => (
+        {TESTIMONIALS.slice(0, 6).map((t, i) => (
           <DmCard
             key={t.id}
             t={t}
