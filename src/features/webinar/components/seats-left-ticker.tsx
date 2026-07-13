@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 
 /** Seats shown on first paint, before the slow countdown begins. */
 const START_SEATS = 7;
-/** One seat "sells" every 5 minutes until the real (admin) count is reached. */
-const TICK_MS = 5 * 60 * 1000;
+/** One seat "sells" every 30 seconds until the real (admin) count is reached. */
+const TICK_MS = 30 * 1000;
 
 /**
  * Renders the admin's seats-left copy with a simulated live tick: the first
