@@ -17,8 +17,10 @@ import { SectionCta } from "@/features/webinar/components/section-cta";
 import { ViewersWatching } from "@/features/webinar/components/viewers-watching";
 import { ValueBand } from "@/features/webinar/components/value-band";
 
-// Always fetch fresh data — admin edits should show up immediately.
-export const dynamic = "force-dynamic";
+// Revalidate every 60 seconds — page is served from Vercel's edge cache
+// and regenerated in the background. Admin edits appear within ~1 minute.
+// Change to a lower value (e.g. 30) if you need faster propagation.
+export const revalidate = 60;
 
 export default async function HomePage() {
   const data = await getWebinarPageData();

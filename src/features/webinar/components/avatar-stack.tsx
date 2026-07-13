@@ -1,17 +1,17 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Social proof cluster of real student faces from /assets/1.png – 6.png.
+ * Social proof cluster of real student faces from /assets/1.webp – 6.png.
  * Shows the first `count` photos stacked with overlap, plus a "+" bubble.
  */
 
 const STUDENT_PHOTOS = [
-  "/assets/7.png",
-  "/assets/8.png",
-  "/assets/9.png",
-  "/assets/10.png",
-  "/assets/11.png",
-  "/assets/12.png",
+  "/assets/7.webp",
+  "/assets/8.webp",
+  "/assets/9.webp",
+  "/assets/10.webp",
+  "/assets/11.webp",
+  "/assets/12.webp",
 ];
 
 export function AvatarStack({

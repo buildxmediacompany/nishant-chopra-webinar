@@ -17,7 +17,7 @@ export function StarRating({
       aria-label={`${rating} out of 5 stars`}
     >
       <img
-        src="/assets/star.png"
+        src="/assets/star.webp"
         alt="5 stars"
         className="h-8 w-auto object-contain"
       />

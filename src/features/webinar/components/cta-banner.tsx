@@ -55,7 +55,7 @@ export function CtaBanner({
 
         {/* Payment image */}
         <img
-          src="/assets/payment.png"
+          src="/assets/payment.webp"
           alt="Accepted payment methods: UPI, Visa, Mastercard, RuPay"
           className="h-7 w-auto max-w-full object-contain"
           loading="lazy"
