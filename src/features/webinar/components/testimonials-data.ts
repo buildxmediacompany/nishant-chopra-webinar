@@ -106,7 +106,7 @@ export const TESTIMONIALS = [
     id: "t12",
     name: "Rohan Verma",
     location: "Ahmedabad",
-    avatar: "/assets/t12.webp",
+    avatar: "/assets/11.webp",
     quote:
       "Sir ne jo concept samjhaya — resonance aur voice placement — isko practically try kiya aur yaar, pehli baar lag raha tha main actually sahi gaa raha hoon! 2 ghante mein itna improvement kisi ne socha bhi nahi tha. Must attend! 🎤🔥",
     rating: 5,
