@@ -55,7 +55,7 @@ export function MobileCtaBar({
           asChild
           variant="cta"
           size="sm"
-          className="h-11 w-full animate-[cta-wobble_3s_ease-in-out_2s_infinite] text-sm font-semibold hover:animate-none"
+          className="h-11 w-full animate-[cta-wobble_1.2s_ease-in-out_infinite] text-sm font-semibold hover:animate-none"
         >
           <a href={registrationUrl} target="_blank" rel="noopener noreferrer">
             Register Now — {formatPaise(offerPricePaise)}/- Only
